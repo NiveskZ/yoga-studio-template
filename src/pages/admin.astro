@@ -172,7 +172,8 @@
                 h('p', { className: 'pv-detalhe pv-centro' }, d.observacao || ''),
                 h('p', { className: 'pv-centro' },
                   parcerias.map(function (p, i) {
-                    return h('span', { className: 'pv-chip', key: i }, '✓ ' + p);
+                    var nome = (p && p.nome) ? p.nome : String(p || '');
+                    return h('span', { className: 'pv-chip', key: i }, '✓ ' + nome);
                   })
                 )
               );

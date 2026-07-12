@@ -1,7 +1,10 @@
 {
   "aula_experimental": "Aula experimental R$ 30,00 (pix na reserva)",
   "observacao": "Pagamento do plano trimestral: valor dos 3 meses à vista no pix, ou no cartão de crédito em até 3x sem juros.",
-  "parcerias": ["Wellhub", "Gympass"],
+  "parcerias": [
+    { "nome": "Wellhub" },
+    { "nome": "Gympass" }
+  ],
   "grupos": [
     {
       "nome": "Planos mensais",

@@ -109,8 +109,11 @@ collections:
             label: 'Parcerias aceitas'
             label_singular: 'parceria'
             widget: 'list'
-            field: { name: 'nome', label: 'Nome', widget: 'string' }
-            hint: 'Cada nome vira um selo abaixo dos planos. Ex: Wellhub, Gympass'
+            summary: '{{fields.nome}}'
+            hint: 'Cada item vira um selo abaixo dos planos. A logo é opcional; sem ela, aparece um check.'
+            fields:
+              - { name: 'nome', label: 'Nome', widget: 'string', hint: 'Ex: Wellhub' }
+              - { name: 'logo', label: 'Logo (opcional)', widget: 'image', required: false, hint: 'Logo pequena e horizontal fica melhor (baixe do site oficial do parceiro).' }
           - name: 'grupos'
             label: 'Grupos de planos'
             label_singular: 'grupo'

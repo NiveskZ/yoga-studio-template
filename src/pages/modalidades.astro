@@ -76,10 +76,14 @@ const modalidadesComTexto = await Promise.all(
         <span class="planos__parcerias-rotulo">Aceitamos:</span>
         {planosData.parcerias.map((parceria) => (
           <span class="chip">
-            <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-              <path d="M2.5 8.5 L6 12 L13.5 4" />
-            </svg>
-            {parceria}
+            {parceria.logo ? (
+              <img src={parceria.logo} alt="" class="chip__logo" />
+            ) : (
+              <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                <path d="M2.5 8.5 L6 12 L13.5 4" />
+              </svg>
+            )}
+            {parceria.nome}
           </span>
         ))}
       </div>
@@ -276,6 +280,11 @@ const modalidadesComTexto = await Promise.all(
 
   .chip svg {
     color: var(--cor-primaria);
+  }
+
+  .chip__logo {
+    height: 16px;
+    width: auto;
   }
 
   .planos__cta {
