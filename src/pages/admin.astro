@@ -42,6 +42,58 @@
         background: #ead9e4;
         border-left: 4px solid #96537c;
       }
+
+      /* ===== Aparência geral do painel (discreta, nas cores da marca) ===== */
+
+      /* Visão em blocos: cartões com altura natural e grade alinhada
+         (por padrão eles ficam enormes, vazios e vazando do container) */
+      div[class*='CardsGrid'] {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 14px;
+        width: 100% !important;
+        margin: 16px 0 !important;
+      }
+
+      div[class*='GridCard'] {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        border: 1px solid #e4e2d8;
+        border-radius: 10px;
+        box-shadow: 0 1px 5px rgba(47, 62, 64, 0.06);
+      }
+
+      div[class*='GridCard'] a,
+      a[class*='GridCardLink'] {
+        display: block;
+        padding: 14px 16px;
+        font-weight: 600;
+        color: #4e5f51;
+      }
+
+      /* Botões de ação principais na cor da marca */
+      a[class*='CollectionTopNewButton'],
+      button[class*='CollectionTopNewButton'] {
+        background-color: #6b7f6e !important;
+      }
+
+      a[class*='CollectionTopNewButton']:hover,
+      button[class*='CollectionTopNewButton']:hover {
+        background-color: #4e5f51 !important;
+      }
+
+      /* Menu lateral: hover na cor da marca */
+      a[class*='SidebarNavLink']:hover {
+        color: #6b7f6e !important;
+      }
+
+      /* Título da coleção com a serifa do site */
+      h1[class*='CollectionTopHeading'] {
+        font-family: Georgia, 'Times New Roman', serif;
+        color: #4e5f51;
+      }
     </style>
 
     <script is:inline>
