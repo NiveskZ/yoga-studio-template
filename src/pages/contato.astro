@@ -45,6 +45,20 @@ const mapaEmbed = `https://www.google.com/maps?q=${enderecoCodificado}&output=em
           <h2>Endereço</h2>
           <p>{settings.endereco}</p>
         </div>
+
+        <!-- Contatos adicionais cadastrados no painel (lista vazia = nada aparece) -->
+        {(settings.contatos_extras ?? []).map((contato) => (
+          <div class="cartao">
+            <h2>{contato.rotulo}</h2>
+            <p>
+              {contato.link ? (
+                <a href={contato.link} target="_blank" rel="noopener">{contato.valor}</a>
+              ) : (
+                contato.valor
+              )}
+            </p>
+          </div>
+        ))}
       </div>
 
       <!-- ===== Como chegar ===== -->

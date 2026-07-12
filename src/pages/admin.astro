@@ -15,7 +15,9 @@
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
   </head>
   <body>
-    <script is:inline src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <!-- Versão fixada: evita atualizações surpresa e melhora o cache.
+         Para atualizar: trocar o número aqui (ver github.com/decaporg/decap-cms/releases) -->
+    <script is:inline src="https://unpkg.com/decap-cms@3.14.1/dist/decap-cms.js"></script>
 
     <!-- Cores por nível nas listas do EDITOR (lado esquerdo), para não se
          perder em lista dentro de lista (ex: dias > aulas). Usa seletores
@@ -47,15 +49,18 @@
 
       /* Visão em blocos: cartões com altura natural e grade alinhada
          (por padrão eles ficam enormes, vazios e vazando do container) */
-      div[class*='CardsGrid'] {
+      /* O container é o mesmo nas duas visões; o :has() garante que a grade
+         só é aplicada quando os cartões são do modo blocos (GridCard) */
+      ul[class*='CardsGrid']:has(> li[class*='GridCard']) {
         display: grid !important;
         grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
         gap: 14px;
         width: 100% !important;
         margin: 16px 0 !important;
+        padding: 0 !important;
       }
 
-      div[class*='GridCard'] {
+      ul[class*='CardsGrid'] > li[class*='GridCard'] {
         width: 100% !important;
         height: auto !important;
         min-height: 0 !important;
@@ -65,12 +70,16 @@
         box-shadow: 0 1px 5px rgba(47, 62, 64, 0.06);
       }
 
-      div[class*='GridCard'] a,
-      a[class*='GridCardLink'] {
+      ul[class*='CardsGrid'] > li[class*='GridCard'] a {
         display: block;
         padding: 14px 16px;
         font-weight: 600;
         color: #4e5f51;
+      }
+
+      ul[class*='CardsGrid'] > li[class*='GridCard'] h2 {
+        margin: 0;
+        font-size: 16px;
       }
 
       /* Botões de ação principais na cor da marca */

@@ -57,6 +57,19 @@ collections:
           - { name: 'tecnofit', label: 'Link de agendamento', widget: 'string', hint: 'Link que os alunos usam para agendar aulas (Tecnofit ou similar).' }
           - { name: 'email', label: 'E-mail', widget: 'string' }
           - { name: 'endereco', label: 'Endereço', widget: 'string' }
+          - name: 'contatos_extras'
+            label: 'Contatos adicionais'
+            label_singular: 'contato'
+            widget: 'list'
+            required: false
+            summary: '{{fields.rotulo}}'
+            hint: 'Opcional: contatos além dos principais (ex: WhatsApp de cada professora, Instagram pessoal). Aparecem como cartõezinhos na página Contato. Deixe vazio para não mostrar nada.'
+            fields:
+              - { name: 'rotulo', label: 'Título', widget: 'string', hint: 'Ex: WhatsApp da Flávia' }
+              - { name: 'valor', label: 'Texto exibido', widget: 'string', hint: 'Ex: (12) 99999-9999 ou @perfil' }
+              - { name: 'link', label: 'Link', widget: 'string', required: false, hint: 'Opcional. Ex: https://wa.me/5512999999999 ou https://instagram.com/perfil' }
+          - { name: 'sobre_resumo', label: 'Texto curto de apresentação', widget: 'text', hint: 'Aparece na página inicial e nas buscas do Google.' }
+
           - { name: 'sobre_resumo', label: 'Texto curto de apresentação', widget: 'text', hint: 'Aparece na página inicial e nas buscas do Google.' }
 
       - name: 'horarios'
