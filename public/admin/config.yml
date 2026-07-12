@@ -97,7 +97,7 @@ collections:
                     value_field: 'nome'
                     display_fields: ['nome']
                     hint: 'Escolha da lista de professoras cadastradas.'
-                  - { name: 'observacao', label: 'Observação (opcional)', widget: 'string', required: false, hint: 'Ex: Todos os níveis, Iniciantes bem-vindos...' }
+                  - { name: 'observacao', label: 'Observação', widget: 'string', required: false, hint: 'Ex: Todos os níveis, Iniciantes bem-vindos...' }
 
       - name: 'planos'
         label: 'Planos e valores'
@@ -113,7 +113,7 @@ collections:
             hint: 'Cada item vira um selo abaixo dos planos. A logo é opcional; sem ela, aparece um check.'
             fields:
               - { name: 'nome', label: 'Nome', widget: 'string', hint: 'Ex: Wellhub' }
-              - { name: 'logo', label: 'Logo (opcional)', widget: 'image', required: false, hint: 'Logo pequena e horizontal fica melhor (baixe do site oficial do parceiro).' }
+              - { name: 'logo', label: 'Logo', widget: 'image', required: false, hint: 'Logo pequena e horizontal fica melhor (baixe do site oficial do parceiro).' }
           - name: 'grupos'
             label: 'Grupos de planos'
             label_singular: 'grupo'
@@ -131,7 +131,7 @@ collections:
                 fields:
                   - { name: 'nome', label: 'Nome do plano', widget: 'string', hint: 'Ex: 2x por semana' }
                   - { name: 'preco', label: 'Preço', widget: 'string', hint: 'Texto livre, ex: R$ 230,00/mês' }
-                  - { name: 'descricao', label: 'Descrição curta (opcional)', widget: 'string', required: false, hint: 'Ex: Validade de 60 dias' }
+                  - { name: 'descricao', label: 'Descrição curta', widget: 'string', required: false, hint: 'Ex: Validade de 60 dias' }
                   - { name: 'destaque', label: 'Destacar como "Mais escolhido"?', widget: 'boolean', default: false, required: false }
 
       - name: 'galeria'
@@ -146,7 +146,7 @@ collections:
             hint: 'Essas fotos aparecem na página Galeria e na prévia do Sobre.'
             fields:
               - { name: 'imagem', label: 'Imagem', widget: 'image' }
-              - { name: 'legenda', label: 'Legenda (opcional)', widget: 'string', required: false }
+              - { name: 'legenda', label: 'Legenda', widget: 'string', required: false }
 
   # ----- Notícias (uma página por notícia) -----
   - name: 'noticias'
@@ -159,7 +159,7 @@ collections:
       - { name: 'titulo', label: 'Título', widget: 'string' }
       - { name: 'data', label: 'Data', widget: 'datetime', format: 'YYYY-MM-DD', time_format: false }
       - { name: 'resumo', label: 'Resumo', widget: 'text', required: false, hint: 'Frase curta que aparece na lista de notícias.' }
-      - { name: 'imagem', label: 'Imagem (opcional)', widget: 'image', required: false }
+      - { name: 'imagem', label: 'Imagem', widget: 'image', required: false }
       - { name: 'body', label: 'Texto da notícia', widget: 'markdown' }
 
   # ----- Professoras -----
@@ -188,6 +188,6 @@ collections:
       - { name: 'professora', label: 'Professora responsável', widget: 'string', required: false }
       - { name: 'ritmo', label: 'Ritmo', widget: 'string', required: false, hint: 'Ex: Moderado, Dinâmico, Lento e profundo' }
       - { name: 'resumo', label: 'Resumo', widget: 'text', hint: 'Frase curta exibida nos cartões da página inicial.' }
-      - { name: 'imagem', label: 'Imagem (opcional)', widget: 'image', required: false }
+      - { name: 'imagem', label: 'Imagem', widget: 'image', required: false }
       - { name: 'ordem', label: 'Ordem de exibição', widget: 'number', default: 0, hint: 'Menor número aparece primeiro.' }
       - { name: 'body', label: 'Descrição completa', widget: 'markdown' }

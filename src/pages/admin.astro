@@ -21,28 +21,24 @@
          perder em lista dentro de lista (ex: dias > aulas). Usa seletores
          por "contém no nome da classe" porque o Decap gera nomes com hash. -->
     <style is:global>
+      /* Cada campo do editor vive num "ControlContainer"; itens de lista têm
+         uma barra "StyledListItemTopBar". Contando os containers aninhados,
+         sabemos a profundidade e pintamos cada nível de uma cor. */
+
       /* Nível 1 (ex: cada DIA da semana): faixa teal */
-      div[class*='ListControl'] div[class*='ListItemTopBar'] {
+      [class*='ControlContainer'] [class*='ListItemTopBar'] {
         background: #dfe8e0;
         border-left: 4px solid #6b7f6e;
       }
 
-      div[class*='ListControl'] div[class*='SortableListItem'] {
-        border-left: 4px solid #6b7f6e;
-      }
-
       /* Nível 2 (ex: cada AULA dentro do dia): faixa areia */
-      div[class*='ListControl'] div[class*='ListControl'] div[class*='ListItemTopBar'] {
+      [class*='ControlContainer'] [class*='ControlContainer'] [class*='ListItemTopBar'] {
         background: #f1ead2;
         border-left: 4px solid #b8963f;
       }
 
-      div[class*='ListControl'] div[class*='ListControl'] div[class*='SortableListItem'] {
-        border-left: 4px solid #b8963f;
-      }
-
-      /* Nível 3 (raro): faixa lilás */
-      div[class*='ListControl'] div[class*='ListControl'] div[class*='ListControl'] div[class*='ListItemTopBar'] {
+      /* Nível 3 (ex: cada PLANO dentro do grupo): faixa lilás */
+      [class*='ControlContainer'] [class*='ControlContainer'] [class*='ControlContainer'] [class*='ListItemTopBar'] {
         background: #ead9e4;
         border-left: 4px solid #96537c;
       }
@@ -148,6 +144,7 @@
           // ----- Planos: grupos com os balõezinhos, como no site -----
           var PlanosPreview = createClass({
             render: function () {
+              var getAsset = this.props.getAsset;
               var d = this.props.entry.get('data').toJS();
               var grupos = d.grupos || [];
               var parcerias = d.parcerias || [];
@@ -173,7 +170,12 @@
                 h('p', { className: 'pv-centro' },
                   parcerias.map(function (p, i) {
                     var nome = (p && p.nome) ? p.nome : String(p || '');
-                    return h('span', { className: 'pv-chip', key: i }, '✓ ' + nome);
+                    var logo = p && p.logo;
+                    return h('span', { className: 'pv-chip', key: i },
+                      logo
+                        ? h('img', { className: 'pv-chip-logo', src: String(getAsset(logo)), alt: nome })
+                        : '✓ ' + nome
+                    );
                   })
                 )
               );
