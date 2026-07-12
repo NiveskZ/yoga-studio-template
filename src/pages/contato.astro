@@ -1,0 +1,69 @@
+---
+import Base from '../layouts/Base.astro';
+import settings from '../data/settings.json';
+
+const linkWhatsApp = `https://wa.me/${settings.whatsapp.numero}?text=${encodeURIComponent(settings.whatsapp.mensagem)}`;
+
+// Extrai o @usuario do link do Instagram (última parte do endereço)
+const instagramHandle = '@' + new URL(settings.instagram).pathname.replaceAll('/', '');
+---
+
+<Base titulo="Contato" descricao={`Entre em contato com o ${settings.nome}.`}>
+  <section class="secao">
+    <div class="container contato">
+      <h1 class="secao__titulo">Fale com a gente</h1>
+      <p class="contato__intro">
+        Quer agendar uma aula experimental, tirar dúvidas sobre horários ou
+        saber mais sobre as vivências? O jeito mais rápido é pelo WhatsApp.
+      </p>
+
+      <a href={linkWhatsApp} class="botao botao--whatsapp" target="_blank" rel="noopener">
+        Chamar no WhatsApp
+      </a>
+
+      <div class="contato__outros">
+        <div class="cartao">
+          <h2>Agendamento de aulas</h2>
+          <p>Alunas e alunos agendam pelo app: <a href={settings.tecnofit} target="_blank" rel="noopener">acessar plataforma</a></p>
+        </div>
+        <div class="cartao">
+          <h2>E-mail</h2>
+          <p><a href={`mailto:${settings.email}`}>{settings.email}</a></p>
+        </div>
+        <div class="cartao">
+          <h2>Instagram</h2>
+          <p><a href={settings.instagram} target="_blank" rel="noopener">{instagramHandle}</a></p>
+        </div>
+        <div class="cartao">
+          <h2>Endereço</h2>
+          <p>{settings.endereco}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contato {
+    text-align: center;
+  }
+
+  .contato__intro {
+    max-width: 560px;
+    margin: 0 auto 2rem;
+    color: var(--cor-texto-suave);
+  }
+
+  .contato__outros {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .contato__outros h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+</style>

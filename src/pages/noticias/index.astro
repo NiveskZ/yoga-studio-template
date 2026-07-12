@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const noticias = (await getCollection('noticias'))
+  .sort((a, b) => b.data.data.getTime() - a.data.data.getTime());
+---
+
+<Base titulo="Notícias" descricao="Novidades, eventos e avisos do estúdio.">
+  <section class="secao">
+    <div class="container">
+      <h1 class="secao__titulo">Notícias e avisos</h1>
+      <div class="lista">
+        {noticias.map((noticia) => (
+          <a href={`/noticias/${noticia.id}`} class="cartao item">
+            <time>
+              {noticia.data.data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+            </time>
+            <h2>{noticia.data.titulo}</h2>
+            {noticia.data.resumo && <p>{noticia.data.resumo}</p>}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lista {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .item {
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease;
+  }
+
+  .item:hover {
+    transform: translateY(-3px);
+  }
+
+  .item time {
+    font-size: 0.85rem;
+    color: var(--cor-texto-suave);
+  }
+
+  .item h2 {
+    font-size: 1.5rem;
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  .item p {
+    color: var(--cor-texto-suave);
+  }
+</style>

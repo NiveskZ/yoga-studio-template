@@ -1,0 +1,94 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+// Busca todas as professoras e ordena pelo campo "ordem"
+const professoras = (await getCollection('professoras'))
+  .sort((a, b) => a.data.ordem - b.data.ordem);
+
+// render() transforma o texto markdown (a bio) em HTML
+const professorasComBio = await Promise.all(
+  professoras.map(async (professora) => {
+    const { Content } = await render(professora);
+    return { ...professora, Content };
+  })
+);
+---
+
+<Base titulo="Professoras" descricao="Conheça as professoras do estúdio.">
+  <section class="secao">
+    <div class="container">
+      <h1 class="secao__titulo">Nossas professoras</h1>
+      <div class="professoras">
+        {professorasComBio.map(({ data, Content }) => (
+          <article class="cartao professora">
+            {data.foto ? (
+              <img src={data.foto} alt={`Foto de ${data.nome}`} class="professora__foto" />
+            ) : (
+              <div class="professora__foto professora__foto--vazia" aria-hidden="true">
+                <svg viewBox="0 0 48 32" width="48" height="32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                  <path d="M24 28 C20 20, 20 10, 24 4 C28 10, 28 20, 24 28 Z" />
+                  <path d="M24 28 C16 26, 9 20, 8 12 C16 14, 22 20, 24 28 Z" />
+                  <path d="M24 28 C32 26, 39 20, 40 12 C32 14, 26 20, 24 28 Z" />
+                </svg>
+              </div>
+            )}
+            <h2>{data.nome}</h2>
+            {data.especialidade && <p class="professora__especialidade">{data.especialidade}</p>}
+            <div class="professora__bio">
+              <Content />
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .professoras {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .professora {
+    text-align: center;
+  }
+
+  .professora__foto {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1.25rem;
+  }
+
+  .professora__foto--vazia {
+    background: var(--cor-fundo-suave);
+    color: var(--cor-primaria);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .professora h2 {
+    font-size: 1.5rem;
+  }
+
+  .professora__especialidade {
+    color: var(--cor-primaria);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0.25rem 0 1rem;
+  }
+
+  .professora__bio {
+    color: var(--cor-texto-suave);
+    font-size: 0.98rem;
+  }
+</style>

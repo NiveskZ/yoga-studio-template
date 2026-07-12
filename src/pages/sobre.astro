@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import settings from '../data/settings.json';
+import galeriaData from '../data/galeria.json';
+
+// Prévia da galeria: as 6 primeiras fotos
+const fotosPrevia = galeriaData.fotos.slice(0, 6);
+---
+
+<Base titulo="Sobre" descricao={`Conheça a história do ${settings.nome}.`}>
+  <section class="secao">
+    <div class="container sobre">
+      <h1 class="secao__titulo">Sobre nós</h1>
+
+      <!-- Texto baseado no personalize este texto -->
+      <p>{settings.sobre_resumo}</p>
+
+      <p>
+        Aqui você encontra práticas intensas, fluidas ou relaxantes (Hatha
+        Flow, Vinyasa e Yin Yoga), orientadas por professoras que vivenciam o
+        yoga genuinamente. As turmas são pequenas de propósito, para que cada
+        pessoa receba um acompanhamento próximo e atencioso.
+      </p>
+
+      <p>
+        Acreditamos que o yoga vai além do tapetinho: é um convite para viver
+        com mais presença, leveza e conexão.
+      </p>
+    </div>
+  </section>
+
+  {fotosPrevia.length > 0 && (
+    <section class="secao secao--suave">
+      <div class="container">
+        <h2 class="secao__titulo">Nosso espaço</h2>
+        <div class="previa-grade">
+          {fotosPrevia.map((foto) => (
+            <img src={foto.imagem} alt={foto.legenda ?? 'Foto do estúdio'} loading="lazy" />
+          ))}
+        </div>
+        <p class="previa-link">
+          <a href="/galeria">Ver galeria completa →</a>
+        </p>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .sobre {
+    max-width: 680px;
+  }
+
+  .sobre p {
+    margin-bottom: 1.25rem;
+  }
+
+  .previa-grade {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .previa-grade img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+  }
+
+  .previa-link {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .previa-link a {
+    font-weight: 700;
+    text-decoration: none;
+  }
+</style>

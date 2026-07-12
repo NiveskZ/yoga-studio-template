@@ -1,0 +1,92 @@
+---
+// Painel de edição (Decap CMS). É uma rota Astro (e não um arquivo em
+// public/) para que /admin funcione igual no dev server e em produção.
+// A configuração do painel continua em public/admin/config.yml.
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Painel do site</title>
+    <!-- Diz ao Decap onde está o config.yml (senão ele procuraria relativo à URL) -->
+    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
+  </head>
+  <body>
+    <script is:inline src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <script is:inline>
+      // Preview do editor com a "cara" do site.
+      // Para horários e notícias, monta o mesmo layout das páginas reais.
+      if (window.CMS) {
+        var CMS = window.CMS;
+        CMS.registerPreviewStyle('/admin/preview.css');
+
+        var h = window.h;
+        var createClass = window.createClass;
+
+        if (h && createClass) {
+          // ----- Preview dos horários: os mesmos cartões da página /horarios -----
+          var ORDEM_DIAS = [
+            'Segunda-feira', 'Terça-feira', 'Quarta-feira',
+            'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo',
+          ];
+
+          var HorariosPreview = createClass({
+            render: function () {
+              var data = this.props.entry.get('data');
+              var dias = (data && data.toJS().dias) || [];
+              dias = dias
+                .filter(function (d) { return d && d.aulas && d.aulas.length; })
+                .sort(function (a, b) { return ORDEM_DIAS.indexOf(a.dia) - ORDEM_DIAS.indexOf(b.dia); });
+
+              return h('div', { className: 'pv-pagina' },
+                h('h1', { className: 'pv-titulo-secao' }, 'Horários das aulas'),
+                h('div', { className: 'pv-grade' },
+                  dias.map(function (d, i) {
+                    var aulas = d.aulas.slice().sort(function (a, b) {
+                      return String(a.hora).localeCompare(String(b.hora));
+                    });
+                    return h('div', { className: 'pv-cartao', key: i },
+                      h('h3', {}, d.dia),
+                      h('ul', {},
+                        aulas.map(function (a, j) {
+                          return h('li', { key: j },
+                            h('span', { className: 'pv-hora' }, a.hora),
+                            h('div', {},
+                              h('strong', {}, a.aula),
+                              h('p', { className: 'pv-detalhe' },
+                                [a.professora, a.observacao].filter(Boolean).join(' · '))
+                            )
+                          );
+                        })
+                      )
+                    );
+                  })
+                )
+              );
+            },
+          });
+          CMS.registerPreviewTemplate('horarios', HorariosPreview);
+
+          // ----- Preview de notícia: como a página da notícia no site -----
+          var NoticiaPreview = createClass({
+            render: function () {
+              var entry = this.props.entry;
+              var data = entry.get('data');
+              var titulo = data ? data.get('titulo') : '';
+              var dataPub = data ? data.get('data') : '';
+              return h('article', { className: 'pv-pagina pv-artigo' },
+                h('p', { className: 'pv-data' }, String(dataPub || '')),
+                h('h1', {}, titulo),
+                h('div', { className: 'pv-corpo' }, this.props.widgetFor('body'))
+              );
+            },
+          });
+          CMS.registerPreviewTemplate('noticias', NoticiaPreview);
+        }
+      }
+    </script>
+  </body>
+</html>

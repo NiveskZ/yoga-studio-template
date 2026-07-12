@@ -1,0 +1,169 @@
+---
+import settings from '../data/settings.json';
+
+const anoAtual = new Date().getFullYear();
+const linkWhatsApp = `https://wa.me/${settings.whatsapp.numero}?text=${encodeURIComponent(settings.whatsapp.mensagem)}`;
+
+const links = [
+  { rotulo: 'Modalidades', url: '/modalidades' },
+  { rotulo: 'Horários', url: '/horarios' },
+  { rotulo: 'Professoras', url: '/professoras' },
+  { rotulo: 'Galeria', url: '/galeria' },
+  { rotulo: 'Contato', url: '/contato' },
+];
+---
+
+<footer class="footer">
+  <div class="container footer__conteudo">
+    <div class="footer__principal">
+      <div class="footer__marca-bloco">
+        <svg class="footer__lotus" viewBox="0 0 48 32" width="90" height="60" fill="none" stroke="var(--cor-destaque)" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+      <path d="M24 28 C20 20, 20 10, 24 4 C28 10, 28 20, 24 28 Z" />
+      <path d="M24 28 C16 26, 9 20, 8 12 C16 14, 22 20, 24 28 Z" />
+      <path d="M24 28 C32 26, 39 20, 40 12 C32 14, 26 20, 24 28 Z" />
+    </svg>
+        <p class="footer__marca">{settings.nome}</p>
+        <p class="footer__slogan">{settings.slogan}</p>
+      </div>
+
+      <nav class="footer__nav">
+        {links.map((link) => <a href={link.url}>{link.rotulo}</a>)}
+      </nav>
+    </div>
+
+    <p class="footer__contatos">
+      <a href={settings.instagram} target="_blank" rel="noopener">Instagram</a>
+      <span aria-hidden="true">·</span>
+      <a href={linkWhatsApp} target="_blank" rel="noopener">WhatsApp</a>
+      <span aria-hidden="true">·</span>
+      <a href={`mailto:${settings.email}`}>E-mail</a>
+    </p>
+
+    <p class="footer__endereco">{settings.endereco}</p>
+  </div>
+
+  <div class="footer__creditos">
+    <p>
+      © {anoAtual} {settings.nome} ·
+      <a href="/privacidade">Política de Privacidade</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: linear-gradient(180deg, var(--cor-primaria-escura) 0%, #0d4a55 100%);
+    color: var(--cor-fundo);
+    margin-top: 4rem;
+    text-align: center;
+  }
+
+  .footer__conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding-top: 3rem;
+    padding-bottom: 2.25rem;
+  }
+
+  /* Marca à esquerda, menu à direita (empilha no celular) */
+  .footer__principal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4.5rem;
+  }
+
+  .footer__marca-bloco {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .footer__lotus {
+    width: 90px;
+    height: auto;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer__marca {
+    font-family: var(--fonte-titulo);
+    font-size: 1.7rem;
+    font-weight: 700;
+  }
+
+  .footer__slogan {
+    font-style: italic;
+    opacity: 0.75;
+    font-size: 0.95rem;
+  }
+
+  /* Um link por linha, compacto, ao lado da marca */
+  .footer__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: flex-start;
+    border-left: 1px solid rgba(251, 250, 243, 0.18);
+    padding-left: 2.5rem;
+  }
+
+  @media (max-width: 620px) {
+    .footer__principal {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .footer__nav {
+      align-items: center;
+      border-left: none;
+      padding-left: 0;
+    }
+  }
+
+  .footer__nav a {
+    color: var(--cor-fundo);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    opacity: 0.9;
+    border-bottom: 1px solid transparent;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+
+  .footer__nav a:hover {
+    opacity: 1;
+    border-bottom-color: var(--cor-destaque);
+  }
+
+  .footer__contatos {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    font-size: 0.92rem;
+  }
+
+  .footer__contatos a {
+    color: var(--cor-destaque);
+  }
+
+  .footer__endereco {
+    font-size: 0.85rem;
+    opacity: 0.65;
+    margin-top: 0.5rem;
+  }
+
+  .footer__creditos {
+    border-top: 1px solid rgba(251, 250, 243, 0.12);
+    padding: 1rem;
+    font-size: 0.82rem;
+    opacity: 0.65;
+  }
+
+  .footer__creditos a {
+    color: var(--cor-fundo);
+  }
+</style>

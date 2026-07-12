@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import settings from '../data/settings.json';
+---
+
+<Base titulo="Política de Privacidade" descricao="Política de privacidade do site do estúdio.">
+  <section class="secao">
+    <div class="container texto">
+      <h1 class="secao__titulo">Política de Privacidade</h1>
+
+      <p>
+        Esta página explica como o site do <strong>{settings.nome}</strong>
+        trata informações de visitantes, em conformidade com a Lei Geral de
+        Proteção de Dados (LGPD, Lei nº 13.709/2018).
+      </p>
+
+      <h2>Dados que coletamos</h2>
+      <p>
+        Este site é apenas informativo: <strong>não há cadastro, formulários nem
+        cookies de rastreamento</strong>. Não coletamos nome, e-mail, telefone ou
+        qualquer dado pessoal seu ao navegar.
+      </p>
+
+      <h2>Estatísticas de acesso</h2>
+      <p>
+        Usamos uma ferramenta de estatísticas que funciona <strong>sem
+        cookies</strong> e sem identificar visitantes individualmente. Ela nos
+        informa apenas dados agregados (quantas visitas cada página recebeu, de
+        que país, em que navegador), o que nos ajuda a melhorar o site.
+      </p>
+
+      <h2>Links para serviços externos</h2>
+      <p>
+        O site contém links para WhatsApp, Instagram e para a plataforma de
+        agendamento do estúdio. Ao utilizá-los, você passa a interagir com esses
+        serviços, que possuem políticas de privacidade próprias. Recomendamos a
+        leitura delas.
+      </p>
+
+      <h2>Seus direitos</h2>
+      <p>
+        Para qualquer solicitação relacionada a dados pessoais (por exemplo,
+        sobre uma foto em que você apareça na galeria), entre em contato:
+        <a href={`mailto:${settings.email}`}>{settings.email}</a>.
+      </p>
+
+      <p class="atualizacao">Última atualização: julho de 2026.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .texto {
+    max-width: 680px;
+  }
+
+  .texto h2 {
+    font-size: 1.35rem;
+    margin: 2rem 0 0.5rem;
+  }
+
+  .texto p {
+    margin-bottom: 1rem;
+  }
+
+  .atualizacao {
+    margin-top: 2.5rem;
+    font-size: 0.85rem;
+    color: var(--cor-texto-suave);
+  }
+</style>

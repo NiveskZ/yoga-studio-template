@@ -1,0 +1,87 @@
+---
+// Tabela de horários agrupada por dia da semana.
+// Os dados vêm de src/data/horarios.json (editável pelo painel /admin):
+// uma lista de dias, cada um com sua lista de aulas.
+import horariosData from '../data/horarios.json';
+
+// Ordem fixa dos dias para exibição (independente da ordem no painel)
+const ordemDias = [
+  'Segunda-feira', 'Terça-feira', 'Quarta-feira',
+  'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo',
+];
+
+const dias = (horariosData.dias ?? [])
+  .filter((d) => d.aulas && d.aulas.length > 0)
+  .sort((a, b) => ordemDias.indexOf(a.dia) - ordemDias.indexOf(b.dia))
+  .map((d) => ({
+    ...d,
+    aulas: [...d.aulas].sort((a, b) => a.hora.localeCompare(b.hora)),
+  }));
+---
+
+<div class="horarios">
+  {dias.map(({ dia, aulas }) => (
+    <div class="cartao horarios__dia">
+      <h3>{dia}</h3>
+      <ul>
+        {aulas.map((aula) => (
+          <li>
+            <span class="horarios__hora">{aula.hora}</span>
+            <div>
+              <strong>{aula.aula}</strong>
+              <p class="horarios__detalhe">
+                {aula.professora}
+                {aula.observacao && <span> · {aula.observacao}</span>}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</div>
+
+<style>
+  /* Flexbox em vez de grid: quando a última linha tem menos cartões
+     (ex: 5 dias em colunas de 3), eles ficam centralizados. */
+  .horarios {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .horarios__dia {
+    flex: 0 1 320px;
+    min-width: 260px;
+  }
+
+  .horarios__dia h3 {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--cor-fundo-suave);
+  }
+
+  .horarios__dia ul {
+    list-style: none;
+  }
+
+  .horarios__dia li {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.6rem 0;
+  }
+
+  .horarios__hora {
+    font-weight: 700;
+    color: var(--cor-primaria);
+    min-width: 3.2rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .horarios__detalhe {
+    font-size: 0.9rem;
+    color: var(--cor-texto-suave);
+  }
+</style>

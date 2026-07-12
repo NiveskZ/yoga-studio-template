@@ -1,0 +1,111 @@
+/* Estilo do painel de PREVIEW do /admin: aproxima a aparência do site
+   para a editora ter noção do resultado. Espelha src/styles/global.css. */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Karla:wght@400;700&display=swap');
+
+body {
+  font-family: 'Karla', sans-serif;
+  color: #2f3e40;
+  background: #fbfaf3;
+  line-height: 1.7;
+  font-size: 1.02rem;
+  padding: 2rem;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  color: #125e6b;
+  line-height: 1.2;
+  margin: 1.2rem 0 0.5rem;
+}
+
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.7rem; }
+
+p { margin: 0.6rem 0; }
+
+a { color: #1a7f8e; }
+
+img {
+  max-width: 100%;
+  border-radius: 12px;
+}
+
+/* ===== Previews que espelham o layout do site ===== */
+
+.pv-pagina {
+  max-width: 100%;
+}
+
+.pv-titulo-secao {
+  text-align: center;
+}
+
+.pv-titulo-secao::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 2px;
+  background: #1a7f8e;
+  margin: 0.9rem auto 1.5rem;
+}
+
+.pv-grade {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.pv-cartao {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(47, 62, 64, 0.08);
+  padding: 1.5rem;
+  flex: 0 1 280px;
+  min-width: 230px;
+}
+
+.pv-cartao h3 {
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eef0e4;
+}
+
+.pv-cartao ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pv-cartao li {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.5rem 0;
+}
+
+.pv-cartao strong {
+  color: #2f3e40;
+}
+
+.pv-hora {
+  font-weight: 700;
+  color: #1a7f8e;
+  min-width: 3.2rem;
+}
+
+.pv-detalhe {
+  font-size: 0.88rem;
+  color: #64777a;
+  margin: 0;
+}
+
+.pv-artigo .pv-data {
+  color: #64777a;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}

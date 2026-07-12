@@ -1,0 +1,10 @@
+// Configuração do deploy no Cloudflare (Workers com Static Assets).
+// O build (npm run build) gera o site em dist/, e este arquivo diz ao
+// Cloudflare para servir essa pasta como site estático.
+{
+  "name": "yoga-studio-template",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}

@@ -1,0 +1,226 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import settings from '../data/settings.json';
+import planosData from '../data/planos.json';
+
+const linkWhatsApp = `https://wa.me/${settings.whatsapp.numero}?text=${encodeURIComponent(settings.whatsapp.mensagem)}`;
+
+const modalidades = (await getCollection('modalidades'))
+  .sort((a, b) => a.data.ordem - b.data.ordem);
+
+const modalidadesComTexto = await Promise.all(
+  modalidades.map(async (m) => {
+    const { Content } = await render(m);
+    return { ...m, Content };
+  })
+);
+---
+
+<Base titulo="Modalidades" descricao="Conheça as modalidades do estúdio: Hatha Flow, Vinyasa e Yin Yoga, e as diferenças entre elas.">
+  <section class="secao">
+    <div class="container">
+      <h1 class="secao__titulo">Modalidades</h1>
+      <p class="intro">
+        Qual prática combina mais com você? Cada estilo de yoga tem um ritmo e
+        um propósito. Conheça as modalidades do estúdio e, na dúvida, experimente todas.
+      </p>
+
+      <div class="modalidades">
+        {modalidadesComTexto.map(({ data, Content }) => (
+          <article class="cartao modalidade">
+            <header class="modalidade__cabecalho">
+              <h2>{data.nome}</h2>
+              <div class="modalidade__tags">
+                {data.ritmo && <span class="tag">{data.ritmo}</span>}
+                {data.professora && <span class="tag tag--suave">com {data.professora}</span>}
+              </div>
+            </header>
+            <div class="modalidade__texto">
+              <Content />
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Planos e valores ===== -->
+  <!-- O id="planos" permite linkar direto: /modalidades#planos -->
+  <section class="secao secao--suave" id="planos">
+    <div class="container">
+      <h2 class="secao__titulo">Planos e valores</h2>
+
+      <p class="planos__experimental">{planosData.aula_experimental}</p>
+
+      <div class="planos">
+        {planosData.grupos.map((grupo) => (
+          <details class="cartao grupo" open={grupo.aberto}>
+            <summary>{grupo.nome}</summary>
+            <ul>
+              {grupo.planos.map((plano) => (
+                <li>
+                  <div>
+                    <strong>{plano.nome}</strong>
+                    {plano.descricao && <p class="grupo__descricao">{plano.descricao}</p>}
+                  </div>
+                  <span class="grupo__preco">{plano.preco}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        ))}
+      </div>
+
+      <p class="planos__observacao">{planosData.observacao}</p>
+      <p class="planos__parcerias">{planosData.parcerias}</p>
+
+      <div class="planos__cta">
+        <a href={linkWhatsApp} class="botao botao--whatsapp" target="_blank" rel="noopener">
+          Agendar aula experimental
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    text-align: center;
+    max-width: 620px;
+    margin: -1rem auto 2.5rem;
+    color: var(--cor-texto-suave);
+  }
+
+  .modalidades {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .modalidade__cabecalho {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+
+  .modalidade__tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    background: var(--cor-primaria);
+    color: var(--cor-branco);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+  }
+
+  .tag--suave {
+    background: var(--cor-fundo-suave);
+    color: var(--cor-texto);
+  }
+
+  .modalidade__texto :global(p) {
+    margin-bottom: 0.9rem;
+    color: var(--cor-texto-suave);
+  }
+
+  .planos__experimental {
+    text-align: center;
+    font-weight: 700;
+    color: var(--cor-primaria-escura);
+    margin: -1rem 0 2rem;
+  }
+
+  .planos {
+    display: grid;
+    gap: 1rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .grupo {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  /* O <summary> é o "botão" que abre e fecha o grupo */
+  .grupo summary {
+    cursor: pointer;
+    font-family: var(--fonte-titulo);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--cor-primaria-escura);
+    padding: 1.1rem 1.75rem;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .grupo summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Setinha que gira quando o grupo está aberto */
+  .grupo summary::after {
+    content: '▾';
+    color: var(--cor-primaria);
+    transition: transform 0.2s ease;
+  }
+
+  .grupo[open] summary::after {
+    transform: rotate(180deg);
+  }
+
+  .grupo ul {
+    list-style: none;
+    padding: 0 1.75rem 1rem;
+  }
+
+  .grupo li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-top: 1px solid var(--cor-fundo-suave);
+  }
+
+  .grupo__descricao {
+    font-size: 0.85rem;
+    color: var(--cor-texto-suave);
+  }
+
+  .grupo__preco {
+    font-weight: 700;
+    color: var(--cor-primaria-escura);
+    white-space: nowrap;
+  }
+
+  .planos__observacao {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--cor-texto-suave);
+    margin-top: 1.75rem;
+  }
+
+  .planos__parcerias {
+    text-align: center;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+
+  .planos__cta {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+</style>

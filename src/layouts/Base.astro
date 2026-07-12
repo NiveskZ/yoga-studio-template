@@ -1,0 +1,43 @@
+---
+// Layout base: tudo que é comum a todas as páginas (head, header, footer,
+// botão flutuante de WhatsApp). Cada página "envelopa" seu conteúdo com ele.
+import settings from '../data/settings.json';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BotaoWhatsAppFlutuante from '../components/BotaoWhatsAppFlutuante.astro';
+import '../styles/global.css';
+
+interface Props {
+  titulo: string;
+  descricao?: string;
+}
+
+const { titulo, descricao = settings.sobre_resumo } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{titulo} · {settings.nome}</title>
+    <meta name="description" content={descricao} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Fontes: Cormorant Garamond (títulos) e Karla (corpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Karla:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <!-- <slot /> é onde o conteúdo de cada página entra -->
+      <slot />
+    </main>
+    <Footer />
+    <BotaoWhatsAppFlutuante />
+  </body>
+</html>

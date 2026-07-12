@@ -1,0 +1,18 @@
+{
+  "endereco": "Rua Exemplo, 123 - Bairro, Cidade/UF",
+  "banner": {
+    "titulo": "Encontre seu equilíbrio",
+    "subtitulo": "Aulas de yoga para todos os níveis, em um espaço de paz e aconchego feito para você desacelerar.",
+    "botao_texto": "Agende uma aula experimental"
+  },
+  "whatsapp": {
+    "numero": "5511999999999",
+    "mensagem": "Olá! Vi o site do estúdio e gostaria de agendar uma aula experimental."
+  },
+  "instagram": "https://www.instagram.com/instagram/",
+  "nome": "Sereno Yoga",
+  "email": "contato@seuestudio.com.br",
+  "sobre_resumo": "O Sereno nasceu com o objetivo de promover os benefícios do yoga de forma simples e acolhedora. Um local de paz, com turmas pequenas e acompanhamento próximo.",
+  "tecnofit": "https://exemplo.com/agendamento",
+  "slogan": "Espaço de yoga e bem-estar"
+}

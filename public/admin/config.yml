@@ -1,0 +1,184 @@
+# ============================================================
+# Configuração do Decap CMS (painel /admin)
+# Cada "collection" abaixo vira uma seção no painel.
+# ============================================================
+
+# MODO LOCAL (desenvolvimento): rodando na sua máquina (localhost), com
+#   npm run cms   (num terminal)
+#   npm run dev   (em outro)
+# o painel usa o proxy local e dispensa login.
+local_backend: true
+
+# Em produção, configure a autenticação. Opções comuns:
+# - DecapBridge (login por e-mail/senha, ideal para leigos): https://decapbridge.com
+# - GitHub OAuth via proxy (ex: sveltia-cms-auth em um Cloudflare Worker)
+backend:
+  name: github
+  repo: SEU_USUARIO/SEU_REPOSITORIO
+  branch: main
+
+# Onde as imagens enviadas pelo painel são salvas
+media_folder: 'public/images/uploads'
+# Como o site referencia essas imagens
+public_folder: '/images/uploads'
+
+locale: 'pt'
+site_url: 'https://example.com'
+
+collections:
+  # ----- Configurações gerais (arquivos únicos) -----
+  - name: 'configuracoes'
+    label: 'Configurações do site'
+    files:
+      - name: 'settings'
+        label: 'Informações gerais e banner'
+        file: 'src/data/settings.json'
+        fields:
+          - { name: 'nome', label: 'Nome do estúdio', widget: 'string' }
+          - { name: 'slogan', label: 'Slogan', widget: 'string', hint: 'Frase curta que aparece no banner e no rodapé.' }
+          - name: 'banner'
+            label: 'Banner da página inicial'
+            widget: 'object'
+            fields:
+              - { name: 'titulo', label: 'Título', widget: 'string' }
+              - { name: 'subtitulo', label: 'Subtítulo', widget: 'text' }
+              - { name: 'botao_texto', label: 'Texto do botão', widget: 'string' }
+          - name: 'whatsapp'
+            label: 'WhatsApp'
+            widget: 'object'
+            fields:
+              - name: 'numero'
+                label: 'Número'
+                widget: 'string'
+                hint: 'Só números, com país e DDD. Exemplo: 5511999999999'
+                pattern: ['^[0-9]{12,13}$', 'Use apenas números: 55 + DDD + telefone']
+              - { name: 'mensagem', label: 'Mensagem pré-preenchida', widget: 'text', hint: 'Texto que já aparece digitado quando a pessoa clica no botão do WhatsApp.' }
+          - { name: 'instagram', label: 'Link do Instagram', widget: 'string', hint: 'Endereço completo, ex: https://instagram.com/seuperfil' }
+          - { name: 'tecnofit', label: 'Link de agendamento', widget: 'string', hint: 'Link que os alunos usam para agendar aulas (Tecnofit ou similar).' }
+          - { name: 'email', label: 'E-mail', widget: 'string' }
+          - { name: 'endereco', label: 'Endereço', widget: 'string' }
+          - { name: 'sobre_resumo', label: 'Texto curto de apresentação', widget: 'text', hint: 'Aparece na página inicial e nas buscas do Google.' }
+
+      - name: 'horarios'
+        label: 'Horários das aulas'
+        file: 'src/data/horarios.json'
+        fields:
+          - name: 'dias'
+            label: 'Dias com aula'
+            label_singular: 'dia'
+            widget: 'list'
+            summary: '{{fields.dia}}'
+            hint: 'Cada item é um dia da semana com suas aulas dentro. A ordem aqui não importa: o site sempre exibe de segunda a domingo, com as aulas em ordem de horário.'
+            fields:
+              - name: 'dia'
+                label: 'Dia da semana'
+                widget: 'select'
+                options:
+                  - 'Segunda-feira'
+                  - 'Terça-feira'
+                  - 'Quarta-feira'
+                  - 'Quinta-feira'
+                  - 'Sexta-feira'
+                  - 'Sábado'
+                  - 'Domingo'
+              - name: 'aulas'
+                label: 'Aulas do dia'
+                label_singular: 'aula'
+                widget: 'list'
+                summary: '{{fields.hora}}: {{fields.aula}} ({{fields.professora}})'
+                fields:
+                  - { name: 'hora', label: 'Horário', widget: 'string', hint: 'Formato 24h, ex: 19:15', pattern: ['^\d{2}:\d{2}$', 'Use o formato HH:MM, ex: 07:00'] }
+                  - { name: 'aula', label: 'Nome da aula', widget: 'string', hint: 'Ex: Hatha Flow, Vinyasa, Yin Yoga' }
+                  - name: 'professora'
+                    label: 'Professora'
+                    widget: 'relation'
+                    collection: 'professoras'
+                    search_fields: ['nome']
+                    value_field: 'nome'
+                    display_fields: ['nome']
+                    hint: 'Escolha da lista de professoras cadastradas.'
+                  - { name: 'observacao', label: 'Observação (opcional)', widget: 'string', required: false, hint: 'Ex: Todos os níveis, Iniciantes bem-vindos...' }
+
+      - name: 'planos'
+        label: 'Planos e valores'
+        file: 'src/data/planos.json'
+        fields:
+          - { name: 'aula_experimental', label: 'Aula experimental', widget: 'string', hint: 'Frase em destaque acima dos planos.' }
+          - { name: 'observacao', label: 'Observação geral', widget: 'text', hint: 'Texto pequeno exibido abaixo dos planos (formas de pagamento etc).' }
+          - { name: 'parcerias', label: 'Parcerias aceitas', widget: 'string', hint: 'Ex: Aceitamos Wellhub e Gympass' }
+          - name: 'grupos'
+            label: 'Grupos de planos'
+            label_singular: 'grupo'
+            widget: 'list'
+            summary: '{{fields.nome}}'
+            hint: 'Cada grupo (Mensal, Trimestral, Pacotes...) vira uma caixinha que abre e fecha no site.'
+            fields:
+              - { name: 'nome', label: 'Nome do grupo', widget: 'string', hint: 'Ex: Planos mensais' }
+              - { name: 'aberto', label: 'Já aparecer aberto no site?', widget: 'boolean', default: false }
+              - name: 'planos'
+                label: 'Planos do grupo'
+                label_singular: 'plano'
+                widget: 'list'
+                summary: '{{fields.nome}}: {{fields.preco}}'
+                fields:
+                  - { name: 'nome', label: 'Nome do plano', widget: 'string', hint: 'Ex: 2x por semana' }
+                  - { name: 'preco', label: 'Preço', widget: 'string', hint: 'Texto livre, ex: R$ 230,00/mês' }
+                  - { name: 'descricao', label: 'Descrição curta (opcional)', widget: 'string', required: false, hint: 'Ex: Validade de 60 dias' }
+
+      - name: 'galeria'
+        label: 'Galeria de fotos'
+        file: 'src/data/galeria.json'
+        fields:
+          - name: 'fotos'
+            label: 'Fotos'
+            label_singular: 'foto'
+            widget: 'list'
+            summary: '{{fields.legenda}}'
+            hint: 'Essas fotos aparecem na página Galeria e na prévia do Sobre.'
+            fields:
+              - { name: 'imagem', label: 'Imagem', widget: 'image' }
+              - { name: 'legenda', label: 'Legenda (opcional)', widget: 'string', required: false }
+
+  # ----- Notícias (uma página por notícia) -----
+  - name: 'noticias'
+    label: 'Notícias e avisos'
+    label_singular: 'notícia'
+    folder: 'src/content/noticias'
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { name: 'titulo', label: 'Título', widget: 'string' }
+      - { name: 'data', label: 'Data', widget: 'datetime', format: 'YYYY-MM-DD', time_format: false }
+      - { name: 'resumo', label: 'Resumo', widget: 'text', required: false, hint: 'Frase curta que aparece na lista de notícias.' }
+      - { name: 'imagem', label: 'Imagem (opcional)', widget: 'image', required: false }
+      - { name: 'body', label: 'Texto da notícia', widget: 'markdown' }
+
+  # ----- Professoras -----
+  - name: 'professoras'
+    label: 'Professoras'
+    label_singular: 'professora'
+    folder: 'src/content/professoras'
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { name: 'nome', label: 'Nome', widget: 'string' }
+      - { name: 'especialidade', label: 'Especialidade', widget: 'string', required: false, hint: 'Ex: Hatha Flow, Vinyasa e Yin Yoga' }
+      - { name: 'foto', label: 'Foto', widget: 'image', required: false }
+      - { name: 'ordem', label: 'Ordem de exibição', widget: 'number', default: 0, hint: 'Menor número aparece primeiro.' }
+      - { name: 'body', label: 'Mini-biografia', widget: 'markdown' }
+
+  # ----- Modalidades -----
+  - name: 'modalidades'
+    label: 'Modalidades'
+    label_singular: 'modalidade'
+    folder: 'src/content/modalidades'
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { name: 'nome', label: 'Nome da modalidade', widget: 'string' }
+      - { name: 'professora', label: 'Professora responsável', widget: 'string', required: false }
+      - { name: 'ritmo', label: 'Ritmo', widget: 'string', required: false, hint: 'Ex: Moderado, Dinâmico, Lento e profundo' }
+      - { name: 'resumo', label: 'Resumo', widget: 'text', hint: 'Frase curta exibida nos cartões da página inicial.' }
+      - { name: 'imagem', label: 'Imagem (opcional)', widget: 'image', required: false }
+      - { name: 'ordem', label: 'Ordem de exibição', widget: 'number', default: 0, hint: 'Menor número aparece primeiro.' }
+      - { name: 'body', label: 'Descrição completa', widget: 'markdown' }

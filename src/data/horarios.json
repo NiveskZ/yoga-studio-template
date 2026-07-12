@@ -1,0 +1,24 @@
+{
+  "dias": [
+    {
+      "dia": "Segunda-feira",
+      "aulas": [
+        { "hora": "07:00", "aula": "Hatha Flow", "professora": "Ana" },
+        { "hora": "19:00", "aula": "Vinyasa", "professora": "Bia" }
+      ]
+    },
+    {
+      "dia": "Quarta-feira",
+      "aulas": [
+        { "hora": "07:00", "aula": "Vinyasa", "professora": "Bia" },
+        { "hora": "19:00", "aula": "Yin Yoga", "professora": "Bia", "observacao": "Iniciantes bem-vindos" }
+      ]
+    },
+    {
+      "dia": "Sexta-feira",
+      "aulas": [
+        { "hora": "07:00", "aula": "Hatha Flow", "professora": "Ana", "observacao": "Todos os níveis" }
+      ]
+    }
+  ]
+}

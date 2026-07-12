@@ -1,0 +1,129 @@
+/* ============================================================
+   Estilos globais do site
+   Toda a identidade visual do site sai das variáveis abaixo.
+   Para mudar a "cara" do site inteiro, mexa primeiro aqui.
+   ============================================================ */
+
+:root {
+  /* Paleta padrão: teal profundo, creme e teal claro. Troque pelas cores da sua marca. */
+  --cor-fundo: #fbfaf3;        /* creme claro (das pétalas da lótus), fundo geral */
+  --cor-fundo-suave: #eef0e4;  /* creme mais presente, seções alternadas */
+  --cor-primaria: #1a7f8e;     /* teal da logo, botões e destaques */
+  --cor-primaria-escura: #125e6b; /* teal profundo, hover e títulos fortes */
+  --cor-destaque: #7ec6cb;     /* teal claro das pétalas, detalhes */
+  --cor-texto: #2f3e40;        /* quase-preto azulado, texto corrido */
+  --cor-texto-suave: #64777a;  /* legendas e textos secundários */
+  --cor-branco: #ffffff;
+  --cor-whatsapp: #25d366;
+
+  /* Tipografia: serifada elegante nos títulos, limpa no corpo */
+  --fonte-titulo: 'Cormorant Garamond', Georgia, serif;
+  --fonte-corpo: 'Karla', -apple-system, 'Segoe UI', sans-serif;
+
+  /* Medidas reutilizadas */
+  --largura-conteudo: 1080px;
+  --raio: 12px;
+  --sombra: 0 2px 16px rgba(61, 64, 56, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--fonte-corpo);
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--fonte-titulo);
+  font-weight: 600;
+  color: var(--cor-primaria-escura);
+  line-height: 1.2;
+}
+
+h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+h3 { font-size: 1.4rem; }
+
+a {
+  color: var(--cor-primaria);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Container central usado em todas as seções */
+.container {
+  max-width: var(--largura-conteudo);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.secao {
+  padding: 4.5rem 0;
+}
+
+.secao--suave {
+  background: var(--cor-fundo-suave);
+}
+
+/* Título de seção com filete decorativo embaixo */
+.secao__titulo {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.secao__titulo::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 2px;
+  background: var(--cor-primaria);
+  margin: 0.9rem auto 0;
+}
+
+/* Botões */
+.botao {
+  display: inline-block;
+  padding: 0.85rem 2rem;
+  border-radius: 999px;
+  background: var(--cor-primaria);
+  color: var(--cor-branco);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.botao:hover {
+  background: var(--cor-primaria-escura);
+  transform: translateY(-2px);
+}
+
+.botao--whatsapp {
+  background: var(--cor-whatsapp);
+}
+
+.botao--whatsapp:hover {
+  background: #1eb855;
+}
+
+/* Cartões (instrutores, notícias, aulas) */
+.cartao {
+  background: var(--cor-branco);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  padding: 1.75rem;
+}

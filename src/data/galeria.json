@@ -1,0 +1,7 @@
+{
+  "fotos": [
+    { "imagem": "/images/galeria/exemplo-1.svg", "legenda": "Nosso espaço (foto de exemplo)" },
+    { "imagem": "/images/galeria/exemplo-2.svg", "legenda": "Prática em grupo (foto de exemplo)" },
+    { "imagem": "/images/galeria/exemplo-3.svg", "legenda": "Vivência de meditação (foto de exemplo)" }
+  ]
+}

@@ -1,0 +1,141 @@
+---
+import settings from '../data/settings.json';
+
+// Links do menu. Para adicionar uma página nova ao menu, inclua aqui.
+const links = [
+  { rotulo: 'Início', url: '/' },
+  { rotulo: 'Modalidades', url: '/modalidades' },
+  { rotulo: 'Planos', url: '/modalidades#planos' },
+  { rotulo: 'Horários', url: '/horarios' },
+  { rotulo: 'Professoras', url: '/professoras' },
+  { rotulo: 'Galeria', url: '/galeria' },
+  { rotulo: 'Notícias', url: '/noticias' },
+  { rotulo: 'Sobre', url: '/sobre' },
+  { rotulo: 'Contato', url: '/contato' },
+];
+
+// Marca o link da página atual para destacá-lo no menu
+const caminhoAtual = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="header">
+  <div class="container header__conteudo">
+    <a href="/" class="header__marca">
+      <span class="header__lotus" aria-hidden="true">
+        <!-- Flor de lótus estilizada (logo provisória) -->
+        <svg viewBox="0 0 48 32" width="34" height="23" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <path d="M24 28 C20 20, 20 10, 24 4 C28 10, 28 20, 24 28 Z" />
+          <path d="M24 28 C16 26, 9 20, 8 12 C16 14, 22 20, 24 28 Z" />
+          <path d="M24 28 C32 26, 39 20, 40 12 C32 14, 26 20, 24 28 Z" />
+        </svg>
+      </span>
+      {settings.nome}
+    </a>
+
+    <!-- Checkbox invisível controla o menu no celular, sem JavaScript -->
+    <input type="checkbox" id="menu-toggle" class="header__toggle" />
+    <label for="menu-toggle" class="header__hamburguer" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </label>
+
+    <nav class="header__nav">
+      {links.map((link) => (
+        <a href={link.url} class:list={['header__link', { 'header__link--ativo': caminhoAtual === link.url }]}>
+          {link.rotulo}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    background: var(--cor-fundo);
+    border-bottom: 1px solid rgba(26, 127, 142, 0.15);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .header__conteudo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    flex-wrap: wrap;
+  }
+
+  .header__marca {
+    font-family: var(--fonte-titulo);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--cor-primaria-escura);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .header__lotus {
+    color: var(--cor-primaria);
+    display: inline-flex;
+  }
+
+  .header__nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .header__link {
+    text-decoration: none;
+    color: var(--cor-texto);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .header__link:hover,
+  .header__link--ativo {
+    color: var(--cor-primaria-escura);
+    border-bottom-color: var(--cor-primaria);
+  }
+
+  /* --- Menu mobile --- */
+  .header__toggle,
+  .header__hamburguer {
+    display: none;
+  }
+
+  @media (max-width: 760px) {
+    .header__hamburguer {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    .header__hamburguer span {
+      width: 24px;
+      height: 2px;
+      background: var(--cor-texto);
+      border-radius: 2px;
+    }
+
+    .header__nav {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1rem 0 0.5rem;
+    }
+
+    /* Quando o checkbox está marcado, o menu aparece */
+    .header__toggle:checked ~ .header__nav {
+      display: flex;
+    }
+  }
+</style>
