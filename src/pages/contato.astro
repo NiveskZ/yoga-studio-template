@@ -6,6 +6,11 @@ const linkWhatsApp = `https://wa.me/${settings.whatsapp.numero}?text=${encodeURI
 
 // Extrai o @usuario do link do Instagram (última parte do endereço)
 const instagramHandle = '@' + new URL(settings.instagram).pathname.replaceAll('/', '');
+
+// Links de mapa gerados a partir do endereço do painel
+const enderecoCodificado = encodeURIComponent(settings.endereco);
+const linkRota = `https://www.google.com/maps/search/?api=1&query=${enderecoCodificado}`;
+const mapaEmbed = `https://www.google.com/maps?q=${enderecoCodificado}&output=embed`;
 ---
 
 <Base titulo="Contato" descricao={`Entre em contato com o ${settings.nome}.`}>
@@ -39,6 +44,31 @@ const instagramHandle = '@' + new URL(settings.instagram).pathname.replaceAll('/
           <p>{settings.endereco}</p>
         </div>
       </div>
+
+      <!-- ===== Como chegar ===== -->
+      <div class="como-chegar" id="como-chegar">
+        <h2>Como chegar</h2>
+        <p class="como-chegar__endereco">{settings.endereco}</p>
+
+        <!-- O mapa do Google só carrega quando a pessoa abre (privacidade:
+             o site continua sem rastreadores até o visitante pedir o mapa) -->
+        <details class="mapa">
+          <summary>Ver mapa</summary>
+          <iframe
+            src={mapaEmbed}
+            width="100%"
+            height="340"
+            style="border:0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title={`Mapa: ${settings.endereco}`}
+          ></iframe>
+        </details>
+
+        <a href={linkRota} class="botao" target="_blank" rel="noopener">
+          Traçar rota no Google Maps
+        </a>
+      </div>
     </div>
   </section>
 </Base>
@@ -65,5 +95,44 @@ const instagramHandle = '@' + new URL(settings.instagram).pathname.replaceAll('/
   .contato__outros h2 {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
+  }
+
+  .como-chegar {
+    margin-top: 3.5rem;
+  }
+
+  .como-chegar__endereco {
+    color: var(--cor-texto-suave);
+    margin: 0.5rem 0 1.25rem;
+  }
+
+  .mapa {
+    max-width: 720px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .mapa summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    padding: 0.6rem;
+    list-style: none;
+  }
+
+  .mapa summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mapa summary::before {
+    content: '▸ ';
+  }
+
+  .mapa[open] summary::before {
+    content: '▾ ';
+  }
+
+  .mapa iframe {
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
   }
 </style>
