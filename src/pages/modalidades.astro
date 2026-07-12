@@ -55,25 +55,34 @@ const modalidadesComTexto = await Promise.all(
 
       <div class="planos">
         {planosData.grupos.map((grupo) => (
-          <details class="cartao grupo" open={grupo.aberto}>
+          <details class="grupo" open={grupo.aberto}>
             <summary>{grupo.nome}</summary>
-            <ul>
+            <div class="grupo__planos">
               {grupo.planos.map((plano) => (
-                <li>
-                  <div>
-                    <strong>{plano.nome}</strong>
-                    {plano.descricao && <p class="grupo__descricao">{plano.descricao}</p>}
-                  </div>
-                  <span class="grupo__preco">{plano.preco}</span>
-                </li>
+                <div class:list={['cartao', 'plano', { 'plano--destaque': plano.destaque }]}>
+                  {plano.destaque && <span class="plano__selo">Mais escolhido</span>}
+                  <h3>{plano.nome}</h3>
+                  <p class="plano__preco">{plano.preco}</p>
+                  {plano.descricao && <p class="plano__descricao">{plano.descricao}</p>}
+                </div>
               ))}
-            </ul>
+            </div>
           </details>
         ))}
       </div>
 
       <p class="planos__observacao">{planosData.observacao}</p>
-      <p class="planos__parcerias">{planosData.parcerias}</p>
+      <div class="planos__parcerias">
+        <span class="planos__parcerias-rotulo">Aceitamos:</span>
+        {planosData.parcerias.map((parceria) => (
+          <span class="chip">
+            <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+              <path d="M2.5 8.5 L6 12 L13.5 4" />
+            </svg>
+            {parceria}
+          </span>
+        ))}
+      </div>
 
       <div class="planos__cta">
         <a href={linkWhatsApp} class="botao botao--whatsapp" target="_blank" rel="noopener">
@@ -143,13 +152,8 @@ const modalidadesComTexto = await Promise.all(
   .planos {
     display: grid;
     gap: 1rem;
-    max-width: 640px;
+    max-width: 860px;
     margin: 0 auto;
-  }
-
-  .grupo {
-    padding: 0;
-    overflow: hidden;
   }
 
   /* O <summary> é o "botão" que abre e fecha o grupo */
@@ -159,11 +163,15 @@ const modalidadesComTexto = await Promise.all(
     font-size: 1.35rem;
     font-weight: 700;
     color: var(--cor-primaria-escura);
-    padding: 1.1rem 1.75rem;
+    background: var(--cor-branco);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    padding: 1rem 1.75rem;
     list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: border-radius 0.15s ease;
   }
 
   .grupo summary::-webkit-details-marker {
@@ -181,29 +189,52 @@ const modalidadesComTexto = await Promise.all(
     transform: rotate(180deg);
   }
 
-  .grupo ul {
-    list-style: none;
-    padding: 0 1.75rem 1rem;
+  /* Os "balõezinhos" de plano dentro do grupo aberto */
+  .grupo__planos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    padding: 1.5rem 0.25rem 0.75rem;
   }
 
-  .grupo li {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
-    padding: 0.65rem 0;
-    border-top: 1px solid var(--cor-fundo-suave);
+  .plano {
+    text-align: center;
+    position: relative;
   }
 
-  .grupo__descricao {
-    font-size: 0.85rem;
-    color: var(--cor-texto-suave);
+  .plano--destaque {
+    outline: 2px solid var(--cor-primaria);
   }
 
-  .grupo__preco {
+  .plano__selo {
+    position: absolute;
+    top: -0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--cor-primaria);
+    color: var(--cor-branco);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.9rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .plano h3 {
+    font-size: 1.15rem;
+  }
+
+  .plano__preco {
+    font-family: var(--fonte-titulo);
+    font-size: 1.7rem;
     font-weight: 700;
     color: var(--cor-primaria-escura);
-    white-space: nowrap;
+    margin: 0.3rem 0 0.2rem;
+  }
+
+  .plano__descricao {
+    font-size: 0.88rem;
+    color: var(--cor-texto-suave);
   }
 
   .planos__observacao {
@@ -213,10 +244,38 @@ const modalidadesComTexto = await Promise.all(
     margin-top: 1.75rem;
   }
 
+  /* Selos de parcerias (Wellhub, Gympass...) */
   .planos__parcerias {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .planos__parcerias-rotulo {
     font-weight: 700;
-    margin-top: 0.5rem;
+    color: var(--cor-texto-suave);
+    font-size: 0.9rem;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--cor-branco);
+    border: 1px solid rgba(107, 127, 110, 0.35);
+    color: var(--cor-primaria-escura);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+    box-shadow: var(--sombra);
+  }
+
+  .chip svg {
+    color: var(--cor-primaria);
   }
 
   .planos__cta {

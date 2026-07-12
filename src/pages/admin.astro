@@ -16,9 +16,40 @@
   </head>
   <body>
     <script is:inline src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <!-- Cores por nível nas listas do EDITOR (lado esquerdo), para não se
+         perder em lista dentro de lista (ex: dias > aulas). Usa seletores
+         por "contém no nome da classe" porque o Decap gera nomes com hash. -->
+    <style is:global>
+      /* Nível 1 (ex: cada DIA da semana): faixa teal */
+      div[class*='ListControl'] div[class*='ListItemTopBar'] {
+        background: #dfe8e0;
+        border-left: 4px solid #6b7f6e;
+      }
+
+      div[class*='ListControl'] div[class*='SortableListItem'] {
+        border-left: 4px solid #6b7f6e;
+      }
+
+      /* Nível 2 (ex: cada AULA dentro do dia): faixa areia */
+      div[class*='ListControl'] div[class*='ListControl'] div[class*='ListItemTopBar'] {
+        background: #f1ead2;
+        border-left: 4px solid #b8963f;
+      }
+
+      div[class*='ListControl'] div[class*='ListControl'] div[class*='SortableListItem'] {
+        border-left: 4px solid #b8963f;
+      }
+
+      /* Nível 3 (raro): faixa lilás */
+      div[class*='ListControl'] div[class*='ListControl'] div[class*='ListControl'] div[class*='ListItemTopBar'] {
+        background: #ead9e4;
+        border-left: 4px solid #96537c;
+      }
+    </style>
+
     <script is:inline>
-      // Preview do editor com a "cara" do site.
-      // Para horários e notícias, monta o mesmo layout das páginas reais.
+      // Previews do editor com a "cara" do site, para cada tipo de conteúdo.
       if (window.CMS) {
         var CMS = window.CMS;
         CMS.registerPreviewStyle('/admin/preview.css');
@@ -27,12 +58,17 @@
         var createClass = window.createClass;
 
         if (h && createClass) {
-          // ----- Preview dos horários: os mesmos cartões da página /horarios -----
           var ORDEM_DIAS = [
             'Segunda-feira', 'Terça-feira', 'Quarta-feira',
             'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo',
           ];
 
+          // Título de seção com filete, como no site
+          function tituloSecao(texto) {
+            return h('h1', { className: 'pv-titulo-secao' }, texto);
+          }
+
+          // ----- Horários: os mesmos cartões da página /horarios -----
           var HorariosPreview = createClass({
             render: function () {
               var data = this.props.entry.get('data');
@@ -42,7 +78,7 @@
                 .sort(function (a, b) { return ORDEM_DIAS.indexOf(a.dia) - ORDEM_DIAS.indexOf(b.dia); });
 
               return h('div', { className: 'pv-pagina' },
-                h('h1', { className: 'pv-titulo-secao' }, 'Horários das aulas'),
+                tituloSecao('Horários das aulas'),
                 h('div', { className: 'pv-grade' },
                   dias.map(function (d, i) {
                     var aulas = d.aulas.slice().sort(function (a, b) {
@@ -70,11 +106,10 @@
           });
           CMS.registerPreviewTemplate('horarios', HorariosPreview);
 
-          // ----- Preview de notícia: como a página da notícia no site -----
+          // ----- Notícia: como a página da notícia no site -----
           var NoticiaPreview = createClass({
             render: function () {
-              var entry = this.props.entry;
-              var data = entry.get('data');
+              var data = this.props.entry.get('data');
               var titulo = data ? data.get('titulo') : '';
               var dataPub = data ? data.get('data') : '';
               return h('article', { className: 'pv-pagina pv-artigo' },
@@ -85,6 +120,124 @@
             },
           });
           CMS.registerPreviewTemplate('noticias', NoticiaPreview);
+
+          // ----- Configurações gerais: banner + contatos, como a home -----
+          var SettingsPreview = createClass({
+            render: function () {
+              var d = this.props.entry.get('data').toJS();
+              var banner = d.banner || {};
+              return h('div', { className: 'pv-pagina' },
+                h('div', { className: 'pv-hero' },
+                  h('p', { className: 'pv-slogan' }, d.slogan || ''),
+                  h('h1', {}, banner.titulo || ''),
+                  h('p', { className: 'pv-subtitulo' }, banner.subtitulo || ''),
+                  h('span', { className: 'pv-botao' }, banner.botao_texto || '')
+                ),
+                h('div', { className: 'pv-cartao pv-contatos' },
+                  h('h3', {}, d.nome || ''),
+                  h('p', {}, d.endereco || ''),
+                  h('p', {}, [d.email, d.instagram].filter(Boolean).join(' · ')),
+                  h('p', { className: 'pv-detalhe' },
+                    'WhatsApp: ' + ((d.whatsapp && d.whatsapp.numero) || ''))
+                )
+              );
+            },
+          });
+          CMS.registerPreviewTemplate('settings', SettingsPreview);
+
+          // ----- Planos: grupos com os balõezinhos, como no site -----
+          var PlanosPreview = createClass({
+            render: function () {
+              var d = this.props.entry.get('data').toJS();
+              var grupos = d.grupos || [];
+              var parcerias = d.parcerias || [];
+              return h('div', { className: 'pv-pagina' },
+                tituloSecao('Planos e valores'),
+                h('p', { className: 'pv-experimental' }, d.aula_experimental || ''),
+                grupos.map(function (g, i) {
+                  return h('div', { key: i },
+                    h('h3', { className: 'pv-grupo-nome' }, (g.nome || '') + (g.aberto ? '  (aberto por padrão)' : '')),
+                    h('div', { className: 'pv-grade' },
+                      (g.planos || []).map(function (p, j) {
+                        return h('div', { className: 'pv-cartao pv-plano' + (p.destaque ? ' pv-plano--destaque' : ''), key: j },
+                          p.destaque ? h('span', { className: 'pv-selo' }, 'Mais escolhido') : null,
+                          h('strong', {}, p.nome || ''),
+                          h('p', { className: 'pv-preco' }, p.preco || ''),
+                          p.descricao ? h('p', { className: 'pv-detalhe' }, p.descricao) : null
+                        );
+                      })
+                    )
+                  );
+                }),
+                h('p', { className: 'pv-detalhe pv-centro' }, d.observacao || ''),
+                h('p', { className: 'pv-centro' },
+                  parcerias.map(function (p, i) {
+                    return h('span', { className: 'pv-chip', key: i }, '✓ ' + p);
+                  })
+                )
+              );
+            },
+          });
+          CMS.registerPreviewTemplate('planos', PlanosPreview);
+
+          // ----- Galeria: grade de fotos, como no site -----
+          var GaleriaPreview = createClass({
+            render: function () {
+              var getAsset = this.props.getAsset;
+              var d = this.props.entry.get('data').toJS();
+              var fotos = d.fotos || [];
+              return h('div', { className: 'pv-pagina' },
+                tituloSecao('Galeria'),
+                h('div', { className: 'pv-fotos' },
+                  fotos.map(function (f, i) {
+                    return h('figure', { key: i },
+                      f.imagem ? h('img', { src: String(getAsset(f.imagem)) }) : null,
+                      f.legenda ? h('figcaption', {}, f.legenda) : null
+                    );
+                  })
+                )
+              );
+            },
+          });
+          CMS.registerPreviewTemplate('galeria', GaleriaPreview);
+
+          // ----- Professora: cartão como na página /professoras -----
+          var ProfessoraPreview = createClass({
+            render: function () {
+              var getAsset = this.props.getAsset;
+              var data = this.props.entry.get('data');
+              var foto = data.get('foto');
+              return h('div', { className: 'pv-pagina' },
+                h('div', { className: 'pv-cartao pv-professora' },
+                  foto ? h('img', { className: 'pv-foto-redonda', src: String(getAsset(foto)) }) : null,
+                  h('h2', {}, data.get('nome') || ''),
+                  h('p', { className: 'pv-especialidade' }, data.get('especialidade') || ''),
+                  h('div', { className: 'pv-detalhe' }, this.props.widgetFor('body'))
+                )
+              );
+            },
+          });
+          CMS.registerPreviewTemplate('professoras', ProfessoraPreview);
+
+          // ----- Modalidade: como o cartão da página /modalidades -----
+          var ModalidadePreview = createClass({
+            render: function () {
+              var data = this.props.entry.get('data');
+              return h('div', { className: 'pv-pagina' },
+                h('div', { className: 'pv-cartao' },
+                  h('h2', {}, data.get('nome') || ''),
+                  h('p', {},
+                    data.get('ritmo') ? h('span', { className: 'pv-chip' }, data.get('ritmo')) : null,
+                    ' ',
+                    data.get('professora') ? h('span', { className: 'pv-chip pv-chip--suave' }, 'com ' + data.get('professora')) : null
+                  ),
+                  h('p', { className: 'pv-detalhe' }, data.get('resumo') || ''),
+                  h('div', { className: 'pv-corpo' }, this.props.widgetFor('body'))
+                )
+              );
+            },
+          });
+          CMS.registerPreviewTemplate('modalidades', ModalidadePreview);
         }
       }
     </script>

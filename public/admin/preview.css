@@ -5,8 +5,8 @@
 
 body {
   font-family: 'Karla', sans-serif;
-  color: #2f3e40;
-  background: #fbfaf3;
+  color: #3d4038;
+  background: #faf8f4;
   line-height: 1.7;
   font-size: 1.02rem;
   padding: 2rem;
@@ -17,7 +17,7 @@ body {
 h1, h2, h3, h4 {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 600;
-  color: #125e6b;
+  color: #4e5f51;
   line-height: 1.2;
   margin: 1.2rem 0 0.5rem;
 }
@@ -27,7 +27,7 @@ h2 { font-size: 1.7rem; }
 
 p { margin: 0.6rem 0; }
 
-a { color: #1a7f8e; }
+a { color: #6b7f6e; }
 
 img {
   max-width: 100%;
@@ -49,7 +49,7 @@ img {
   display: block;
   width: 48px;
   height: 2px;
-  background: #1a7f8e;
+  background: #6b7f6e;
   margin: 0.9rem auto 1.5rem;
 }
 
@@ -72,7 +72,7 @@ img {
 .pv-cartao h3 {
   margin: 0 0 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #eef0e4;
+  border-bottom: 1px solid #f0ece3;
 }
 
 .pv-cartao ul {
@@ -89,23 +89,174 @@ img {
 }
 
 .pv-cartao strong {
-  color: #2f3e40;
+  color: #3d4038;
 }
 
 .pv-hora {
   font-weight: 700;
-  color: #1a7f8e;
+  color: #6b7f6e;
   min-width: 3.2rem;
 }
 
 .pv-detalhe {
   font-size: 0.88rem;
-  color: #64777a;
+  color: #75786f;
   margin: 0;
 }
 
 .pv-artigo .pv-data {
-  color: #64777a;
+  color: #75786f;
   font-size: 0.9rem;
   margin-bottom: 0.25rem;
+}
+
+/* Hero (preview das configurações gerais) */
+.pv-hero {
+  background: linear-gradient(160deg, #e8ede6 0%, #d3ddd0 55%, #bccab9 100%);
+  border-radius: 12px;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.pv-slogan {
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #4e5f51;
+}
+
+.pv-subtitulo {
+  color: #75786f;
+  max-width: 420px;
+  margin: 0.75rem auto 1.25rem;
+}
+
+.pv-botao {
+  display: inline-block;
+  background: #25d366;
+  color: #fff;
+  font-weight: 700;
+  padding: 0.6rem 1.6rem;
+  border-radius: 999px;
+}
+
+.pv-contatos p {
+  margin: 0.3rem 0;
+}
+
+/* Planos */
+.pv-experimental {
+  text-align: center;
+  font-weight: 700;
+  color: #4e5f51;
+}
+
+.pv-grupo-nome {
+  margin: 1.5rem 0 1rem;
+}
+
+.pv-plano {
+  text-align: center;
+  position: relative;
+  flex: 0 1 180px;
+  min-width: 150px;
+}
+
+.pv-plano--destaque {
+  outline: 2px solid #6b7f6e;
+}
+
+.pv-selo {
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #6b7f6e;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.1rem 0.7rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.pv-preco {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4e5f51;
+  margin: 0.25rem 0;
+}
+
+.pv-centro {
+  text-align: center;
+}
+
+.pv-chip {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(107, 127, 110, 0.35);
+  color: #4e5f51;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  margin: 0 0.25rem;
+}
+
+.pv-chip--suave {
+  background: #f0ece3;
+  border-color: transparent;
+  color: #3d4038;
+}
+
+/* Galeria */
+.pv-fotos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.pv-fotos img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.pv-fotos figure {
+  margin: 0;
+}
+
+.pv-fotos figcaption {
+  font-size: 0.8rem;
+  color: #75786f;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+/* Professora */
+.pv-professora {
+  text-align: center;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.pv-foto-redonda {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+}
+
+.pv-especialidade {
+  color: #6b7f6e;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }

@@ -6,13 +6,13 @@
 
 :root {
   /* Paleta padrão: teal profundo, creme e teal claro. Troque pelas cores da sua marca. */
-  --cor-fundo: #fbfaf3;        /* creme claro (das pétalas da lótus), fundo geral */
-  --cor-fundo-suave: #eef0e4;  /* creme mais presente, seções alternadas */
-  --cor-primaria: #1a7f8e;     /* teal da logo, botões e destaques */
-  --cor-primaria-escura: #125e6b; /* teal profundo, hover e títulos fortes */
-  --cor-destaque: #7ec6cb;     /* teal claro das pétalas, detalhes */
-  --cor-texto: #2f3e40;        /* quase-preto azulado, texto corrido */
-  --cor-texto-suave: #64777a;  /* legendas e textos secundários */
+  --cor-fundo: #faf8f4;        /* off-white quente, fundo geral */
+  --cor-fundo-suave: #f0ece3;  /* areia clara, seções alternadas */
+  --cor-primaria: #6b7f6e;     /* verde-sálvia, botões e destaques */
+  --cor-primaria-escura: #4e5f51; /* verde escuro, hover e títulos fortes */
+  --cor-destaque: #a3b8a6;     /* verde claro, detalhes */
+  --cor-texto: #3d4038;        /* quase-preto esverdeado, texto corrido */
+  --cor-texto-suave: #75786f;  /* legendas e textos secundários */
   --cor-branco: #ffffff;
   --cor-whatsapp: #25d366;
 

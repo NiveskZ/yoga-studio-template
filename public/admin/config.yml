@@ -105,7 +105,12 @@ collections:
         fields:
           - { name: 'aula_experimental', label: 'Aula experimental', widget: 'string', hint: 'Frase em destaque acima dos planos.' }
           - { name: 'observacao', label: 'Observação geral', widget: 'text', hint: 'Texto pequeno exibido abaixo dos planos (formas de pagamento etc).' }
-          - { name: 'parcerias', label: 'Parcerias aceitas', widget: 'string', hint: 'Ex: Aceitamos Wellhub e Gympass' }
+          - name: 'parcerias'
+            label: 'Parcerias aceitas'
+            label_singular: 'parceria'
+            widget: 'list'
+            field: { name: 'nome', label: 'Nome', widget: 'string' }
+            hint: 'Cada nome vira um selo abaixo dos planos. Ex: Wellhub, Gympass'
           - name: 'grupos'
             label: 'Grupos de planos'
             label_singular: 'grupo'
@@ -124,6 +129,7 @@ collections:
                   - { name: 'nome', label: 'Nome do plano', widget: 'string', hint: 'Ex: 2x por semana' }
                   - { name: 'preco', label: 'Preço', widget: 'string', hint: 'Texto livre, ex: R$ 230,00/mês' }
                   - { name: 'descricao', label: 'Descrição curta (opcional)', widget: 'string', required: false, hint: 'Ex: Validade de 60 dias' }
+                  - { name: 'destaque', label: 'Destacar como "Mais escolhido"?', widget: 'boolean', default: false, required: false }
 
       - name: 'galeria'
         label: 'Galeria de fotos'
