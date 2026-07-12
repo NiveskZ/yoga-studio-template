@@ -171,10 +171,12 @@
                   parcerias.map(function (p, i) {
                     var nome = (p && p.nome) ? p.nome : String(p || '');
                     var logo = p && p.logo;
+                    var complemento = (p && p.complemento) ? ' (' + p.complemento + ')' : '';
                     return h('span', { className: 'pv-chip', key: i },
                       logo
                         ? h('img', { className: 'pv-chip-logo', src: String(getAsset(logo)), alt: nome })
-                        : '✓ ' + nome
+                        : '✓ ' + nome,
+                      complemento
                     );
                   })
                 )

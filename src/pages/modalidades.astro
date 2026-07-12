@@ -86,6 +86,7 @@ const modalidadesComTexto = await Promise.all(
                 {parceria.nome}
               </>
             )}
+            {parceria.complemento && <span class="chip__complemento">({parceria.complemento})</span>}
           </span>
         ))}
       </div>
@@ -289,6 +290,12 @@ const modalidadesComTexto = await Promise.all(
     width: auto;
     max-width: 120px;
     object-fit: contain;
+  }
+
+  .chip__complemento {
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: var(--cor-texto-suave);
   }
 
   .planos__cta {

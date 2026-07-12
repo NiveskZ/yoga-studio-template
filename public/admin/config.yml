@@ -114,6 +114,7 @@ collections:
             fields:
               - { name: 'nome', label: 'Nome', widget: 'string', hint: 'Ex: Wellhub' }
               - { name: 'logo', label: 'Logo', widget: 'image', required: false, hint: 'Logo pequena e horizontal fica melhor (baixe do site oficial do parceiro).' }
+              - { name: 'complemento', label: 'Complemento', widget: 'string', required: false, hint: 'Texto pequeno ao lado, ex: antigo Gympass' }
           - name: 'grupos'
             label: 'Grupos de planos'
             label_singular: 'grupo'
