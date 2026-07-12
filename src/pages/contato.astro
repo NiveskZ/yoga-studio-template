@@ -27,10 +27,12 @@ const mapaEmbed = `https://www.google.com/maps?q=${enderecoCodificado}&output=em
       </a>
 
       <div class="contato__outros">
-        <div class="cartao">
-          <h2>Agendamento de aulas</h2>
-          <p>Alunas e alunos agendam pelo app: <a href={settings.tecnofit} target="_blank" rel="noopener">acessar plataforma</a></p>
-        </div>
+        {settings.tecnofit && (
+          <div class="cartao">
+            <h2>Agendamento de aulas</h2>
+            <p>Alunas e alunos agendam pelo app: <a href={settings.tecnofit} target="_blank" rel="noopener">acessar plataforma</a></p>
+          </div>
+        )}
         <div class="cartao">
           <h2>E-mail</h2>
           <p><a href={`mailto:${settings.email}`}>{settings.email}</a></p>

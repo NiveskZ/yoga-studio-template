@@ -6,18 +6,20 @@ import settings from '../data/settings.json';
 const linkWhatsApp = `https://wa.me/${settings.whatsapp.numero}?text=${encodeURIComponent(settings.whatsapp.mensagem)}`;
 ---
 
-<Base titulo="Horários" descricao="Horários das aulas de yoga do estúdio.">
+<Base titulo="Horários" descricao="Horários das aulas de yoga do Fluir.">
   <section class="secao">
     <div class="container">
       <h1 class="secao__titulo">Horários das aulas</h1>
       <TabelaHorarios />
       <div class="aviso">
-        <p>
-          Alunas e alunos do estúdio agendam as aulas pelo aplicativo:
-        </p>
+        <p>Quer garantir sua vaga ou tirar dúvidas sobre alguma aula?</p>
         <p class="aviso__botoes">
-          <a href={settings.tecnofit} class="botao" target="_blank" rel="noopener">Agendar aula (app)</a>
-          <a href={linkWhatsApp} class="botao botao--whatsapp" target="_blank" rel="noopener">Dúvidas? WhatsApp</a>
+          <!-- O botão de agendamento só aparece se o link estiver preenchido
+               no painel (Configurações do site > Link de agendamento) -->
+          {settings.tecnofit && (
+            <a href={settings.tecnofit} class="botao" target="_blank" rel="noopener">Agendar aula (app)</a>
+          )}
+          <a href={linkWhatsApp} class="botao botao--whatsapp" target="_blank" rel="noopener">Chamar no WhatsApp</a>
         </p>
       </div>
     </div>

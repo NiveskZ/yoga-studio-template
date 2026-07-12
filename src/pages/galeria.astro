@@ -1,10 +1,34 @@
 ---
-// Galeria de fotos gerenciada pelo /admin (src/data/galeria.json).
-// Futuramente (SPEC-005) esta página também mostrará as publicações do
-// Instagram buscadas no build; a galeria manual continua como fallback.
+// Galeria: mostra as publicações do Instagram buscadas DURANTE O BUILD
+// (SPEC-005). Sem token configurado, ou se a API falhar, cai no fallback:
+// a galeria manual do /admin (src/data/galeria.json). O visitante nunca
+// carrega scripts da Meta; tudo acontece no build.
 import Base from '../layouts/Base.astro';
 import settings from '../data/settings.json';
 import galeriaData from '../data/galeria.json';
+
+// Os posts vêm de src/data/instagram.json, que um Worker agendado do
+// Cloudflare atualiza diariamente via API do Instagram (commit no repo,
+// que dispara o rebuild). Enquanto o arquivo estiver vazio, vale a
+// galeria manual. Configuração completa: docs/INSTAGRAM.md
+import instagramData from '../data/instagram.json';
+
+const posts = instagramData.posts ?? [];
+
+// Seções opcionais (ex: Aulas, Dicas), montadas pelo Worker a partir de
+// hashtags nas legendas. Sem seções, mostra a lista única de posts.
+const secoes = (instagramData.secoes ?? []).filter((s) => s.posts && s.posts.length > 0);
+
+// Resumo da legenda para o alt/caption (primeira linha, até 80 caracteres)
+function resumo(caption?: string): string {
+  if (!caption) return 'Publicação do Instagram';
+  const primeiraLinha = caption.split('\n')[0];
+  return primeiraLinha.length > 80 ? primeiraLinha.slice(0, 77) + '...' : primeiraLinha;
+}
+
+function capa(post: any): string {
+  return post.media_type === 'VIDEO' ? (post.thumbnail_url ?? post.media_url) : post.media_url;
+}
 ---
 
 <Base titulo="Galeria" descricao="Momentos das aulas e vivências do estúdio.">
@@ -13,14 +37,37 @@ import galeriaData from '../data/galeria.json';
       <h1 class="secao__titulo">Galeria</h1>
       <p class="intro">Momentos das nossas aulas, vivências e encontros.</p>
 
-      <div class="grade">
-        {galeriaData.fotos.map((foto) => (
-          <figure class="foto">
-            <img src={foto.imagem} alt={foto.legenda ?? 'Foto do estúdio'} loading="lazy" />
-            {foto.legenda && <figcaption>{foto.legenda}</figcaption>}
-          </figure>
-        ))}
-      </div>
+      {secoes.length > 0 ? (
+        secoes.map((secao) => (
+          <div class="secao-galeria">
+            <h2 class="secao-galeria__titulo">{secao.titulo}</h2>
+            <div class="grade">
+              {secao.posts.map((post) => (
+                <a href={post.permalink} class="foto foto--post" target="_blank" rel="noopener">
+                  <img src={capa(post)} alt={resumo(post.caption)} loading="lazy" />
+                </a>
+              ))}
+            </div>
+          </div>
+        ))
+      ) : posts.length > 0 ? (
+        <div class="grade">
+          {posts.map((post) => (
+            <a href={post.permalink} class="foto foto--post" target="_blank" rel="noopener">
+              <img src={capa(post)} alt={resumo(post.caption)} loading="lazy" />
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="grade">
+          {galeriaData.fotos.map((foto) => (
+            <figure class="foto">
+              <img src={foto.imagem} alt={foto.legenda ?? 'Foto do estúdio'} loading="lazy" />
+              {foto.legenda && <figcaption>{foto.legenda}</figcaption>}
+            </figure>
+          ))}
+        </div>
+      )}
 
       <div class="instagram-cta">
         <p>Acompanhe o dia a dia do estúdio no Instagram:</p>
@@ -46,8 +93,28 @@ import galeriaData from '../data/galeria.json';
     gap: 1.25rem;
   }
 
+  .secao-galeria {
+    margin-bottom: 3rem;
+  }
+
+  .secao-galeria__titulo {
+    font-size: 1.6rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--cor-fundo-suave);
+  }
+
   .foto {
     margin: 0;
+  }
+
+  .foto--post {
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .foto--post:hover {
+    transform: translateY(-3px);
   }
 
   .foto img {
