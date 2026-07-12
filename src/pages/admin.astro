@@ -180,7 +180,36 @@
           });
           CMS.registerPreviewTemplate('noticias', NoticiaPreview);
 
-          // ----- Configurações gerais: banner (home) + cartões da página Contato -----
+          // ----- Configurações gerais: banner (home) + canais da página Contato -----
+          // Ícones iguais aos do site (src/pages/contato.astro)
+          var ICONES_CANAL = {
+            email: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+            instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/>',
+            agenda: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/>',
+            whatsapp: '<path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1 1 21 11.5Z"/>',
+            telefone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7 12.8 12.8 0 0 0 .7 2.8 2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4 12.8 12.8 0 0 0 2.8.7 2 2 0 0 1 1.7 2Z"/>',
+            link: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+          };
+          function canal(icone, texto) {
+            var svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICONES_CANAL[icone] + '</svg>';
+            return h('li', { className: 'pv-canal' },
+              h('span', { className: 'pv-canal__icone', dangerouslySetInnerHTML: { __html: svg } }),
+              texto
+            );
+          }
+          // Extrai o @usuario do link do Instagram, como o site faz
+          function handleInstagram(url) {
+            try { return '@' + new URL(url).pathname.replaceAll('/', ''); } catch (e) { return url || ''; }
+          }
+          // Mesma regra do site para escolher o ícone de um contato adicional
+          function tipoDoContato(c) {
+            var pista = (((c && c.link) || '') + ' ' + ((c && c.rotulo) || '')).toLowerCase();
+            if (pista.indexOf('whatsapp') >= 0 || pista.indexOf('wa.me') >= 0) return 'whatsapp';
+            if (pista.indexOf('instagram') >= 0) return 'instagram';
+            if (pista.indexOf('mail') >= 0) return 'email';
+            if (c && c.link) return 'link';
+            return 'telefone';
+          }
           var SettingsPreview = createClass({
             render: function () {
               var d = this.props.entry.get('data').toJS();
@@ -194,31 +223,20 @@
                   h('p', { className: 'pv-subtitulo' }, banner.subtitulo || ''),
                   h('span', { className: 'pv-botao' }, banner.botao_texto || '')
                 ),
-                h('p', { className: 'pv-onde' }, 'Página Contato (cartões):'),
-                h('div', { className: 'pv-grade' },
-                  h('div', { className: 'pv-cartao pv-contato-cartao' },
-                    h('h3', {}, 'WhatsApp'),
-                    h('p', { className: 'pv-detalhe' }, (d.whatsapp && d.whatsapp.numero) || '')
-                  ),
-                  h('div', { className: 'pv-cartao pv-contato-cartao' },
-                    h('h3', {}, 'E-mail e Instagram'),
-                    h('p', { className: 'pv-detalhe' }, [d.email, d.instagram].filter(Boolean).join(' · '))
-                  ),
-                  h('div', { className: 'pv-cartao pv-contato-cartao' },
-                    h('h3', {}, 'Endereço'),
-                    h('p', { className: 'pv-detalhe' }, d.endereco || '')
-                  ),
-                  d.tecnofit ? h('div', { className: 'pv-cartao pv-contato-cartao' },
-                    h('h3', {}, 'Agendamento'),
-                    h('p', { className: 'pv-detalhe' }, d.tecnofit)
-                  ) : null,
+                h('p', { className: 'pv-onde' }, 'Página Contato (abaixo do botão de WhatsApp):'),
+                h('ul', { className: 'pv-canais' },
+                  d.tecnofit ? canal('agenda', 'Agendar pelo app') : null,
+                  canal('email', d.email || ''),
+                  canal('instagram', handleInstagram(d.instagram)),
                   extras.map(function (c, i) {
-                    return h('div', { className: 'pv-cartao pv-contato-cartao', key: i },
-                      h('h3', {}, (c && c.rotulo) || ''),
-                      h('p', { className: 'pv-detalhe' }, (c && c.valor) || '')
+                    var texto = c && c.link ? (c.rotulo || '') : ((c && c.rotulo) || '') + ': ' + ((c && c.valor) || '');
+                    return h('li', { className: 'pv-canal', key: i },
+                      h('span', { className: 'pv-canal__icone', dangerouslySetInnerHTML: { __html: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICONES_CANAL[tipoDoContato(c)] + '</svg>' } }),
+                      texto
                     );
                   })
-                )
+                ),
+                h('p', { className: 'pv-detalhe pv-centro' }, 'WhatsApp do botão: ' + ((d.whatsapp && d.whatsapp.numero) || '') + '  ·  Endereço (seção "Como chegar"): ' + (d.endereco || ''))
               );
             },
           });

@@ -120,14 +120,33 @@ img {
   margin: 1.5rem 0 0.5rem;
 }
 
-.pv-contato-cartao {
-  flex: 0 1 200px;
-  text-align: center;
+/* Linha de canais da página Contato (ícone + texto, como no site) */
+.pv-canais {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem 1.8rem;
+  margin: 0.5rem 0 1rem;
+  padding: 0;
 }
 
-.pv-contato-cartao h3 {
-  margin: 0 0 0.3rem;
-  font-size: 1.05rem;
+.pv-canal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #64777a;
+  font-size: 0.92rem;
+}
+
+.pv-canal__icone {
+  display: inline-flex;
+  color: #6b7f6e;
+}
+
+.pv-canal__icone svg {
+  width: 17px;
+  height: 17px;
 }
 
 /* Hero (preview das configurações gerais) */

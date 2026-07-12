@@ -2,9 +2,19 @@
 import Base from '../layouts/Base.astro';
 import settings from '../data/settings.json';
 import galeriaData from '../data/galeria.json';
+import instagramData from '../data/instagram.json';
 
-// Prévia da galeria: as 6 primeiras fotos
-const fotosPrevia = galeriaData.fotos.slice(0, 6);
+// Prévia da galeria: prioriza os posts do Instagram (atualizam sozinhos,
+// via Worker — ver docs/INSTAGRAM.md); sem eles, usa a galeria manual.
+const postsIg = (instagramData.posts ?? []).slice(0, 6);
+const fotosPrevia =
+  postsIg.length > 0
+    ? postsIg.map((post: any) => ({
+        imagem: post.media_type === 'VIDEO' ? (post.thumbnail_url ?? post.media_url) : post.media_url,
+        legenda: 'Publicação do Instagram',
+        link: post.permalink,
+      }))
+    : galeriaData.fotos.slice(0, 6).map((foto) => ({ ...foto, link: null }));
 ---
 
 <Base titulo="Sobre" descricao={`Conheça a história do ${settings.nome}.`}>
@@ -34,9 +44,15 @@ const fotosPrevia = galeriaData.fotos.slice(0, 6);
       <div class="container">
         <h2 class="secao__titulo">Nosso espaço</h2>
         <div class="previa-grade">
-          {fotosPrevia.map((foto) => (
-            <img src={foto.imagem} alt={foto.legenda ?? 'Foto do estúdio'} loading="lazy" />
-          ))}
+          {fotosPrevia.map((foto) =>
+            foto.link ? (
+              <a href={foto.link} target="_blank" rel="noopener">
+                <img src={foto.imagem} alt={foto.legenda ?? 'Foto do estúdio'} loading="lazy" />
+              </a>
+            ) : (
+              <img src={foto.imagem} alt={foto.legenda ?? 'Foto do estúdio'} loading="lazy" />
+            )
+          )}
         </div>
         <p class="previa-link">
           <a href="/galeria">Ver galeria completa →</a>

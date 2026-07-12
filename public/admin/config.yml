@@ -63,7 +63,7 @@ collections:
             widget: 'list'
             required: false
             summary: '{{fields.rotulo}}'
-            hint: 'Opcional: contatos além dos principais (ex: WhatsApp de cada professora, Instagram pessoal). Aparecem como cartõezinhos na página Contato. Deixe vazio para não mostrar nada.'
+            hint: 'Opcional: contatos além dos principais (ex: WhatsApp de cada professora, Instagram pessoal). Aparecem como itens discretos com ícone na página Contato, na mesma linha do e-mail e do Instagram. Deixe vazio para não mostrar nada.'
             fields:
               - { name: 'rotulo', label: 'Título', widget: 'string', hint: 'Ex: WhatsApp da Flávia' }
               - { name: 'valor', label: 'Texto exibido', widget: 'string', hint: 'Ex: (12) 99999-9999 ou @perfil' }
@@ -157,7 +157,7 @@ collections:
             label_singular: 'foto'
             widget: 'list'
             summary: '{{fields.legenda}}'
-            hint: 'Essas fotos aparecem na página Galeria e na prévia do Sobre.'
+            hint: 'Fotos reserva: aparecem na Galeria e na prévia do Sobre apenas enquanto o Instagram não estiver conectado. Com o Instagram ativo, as fotos vêm de lá sozinhas.'
             fields:
               - { name: 'imagem', label: 'Imagem', widget: 'image' }
               - { name: 'legenda', label: 'Legenda', widget: 'string', required: false }
