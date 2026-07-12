@@ -5,8 +5,8 @@
 
 body {
   font-family: 'Karla', sans-serif;
-  color: #3d4038;
-  background: #faf8f4;
+  color: #2f3e40;
+  background: #fbfaf3;
   line-height: 1.7;
   font-size: 1.02rem;
   padding: 2rem;
@@ -72,7 +72,7 @@ img {
 .pv-cartao h3 {
   margin: 0 0 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #f0ece3;
+  border-bottom: 1px solid #eef0e4;
 }
 
 .pv-cartao ul {
@@ -89,7 +89,7 @@ img {
 }
 
 .pv-cartao strong {
-  color: #3d4038;
+  color: #2f3e40;
 }
 
 .pv-hora {
@@ -100,19 +100,39 @@ img {
 
 .pv-detalhe {
   font-size: 0.88rem;
-  color: #75786f;
+  color: #64777a;
   margin: 0;
 }
 
 .pv-artigo .pv-data {
-  color: #75786f;
+  color: #64777a;
   font-size: 0.9rem;
   margin-bottom: 0.25rem;
 }
 
+/* Rótulo que indica em que página do site cada bloco aparece */
+.pv-onde {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64777a;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.pv-contato-cartao {
+  flex: 0 1 200px;
+  text-align: center;
+}
+
+.pv-contato-cartao h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.05rem;
+}
+
 /* Hero (preview das configurações gerais) */
 .pv-hero {
-  background: linear-gradient(160deg, #e8ede6 0%, #d3ddd0 55%, #bccab9 100%);
+  background: linear-gradient(160deg, #e6f0ef 0%, #cfe5e5 55%, #a9d3d6 100%);
   border-radius: 12px;
   text-align: center;
   padding: 2.5rem 1.5rem;
@@ -128,7 +148,7 @@ img {
 }
 
 .pv-subtitulo {
-  color: #75786f;
+  color: #64777a;
   max-width: 420px;
   margin: 0.75rem auto 1.25rem;
 }
@@ -198,7 +218,7 @@ img {
   display: inline-flex;
   align-items: center;
   background: #fff;
-  border: 1px solid rgba(107, 127, 110, 0.35);
+  border: 1px solid rgba(26, 127, 142, 0.35);
   color: #4e5f51;
   font-weight: 700;
   font-size: 0.82rem;
@@ -208,9 +228,9 @@ img {
 }
 
 .pv-chip--suave {
-  background: #f0ece3;
+  background: #eef0e4;
   border-color: transparent;
-  color: #3d4038;
+  color: #2f3e40;
 }
 
 /* Galeria */
@@ -233,7 +253,7 @@ img {
 
 .pv-fotos figcaption {
   font-size: 0.8rem;
-  color: #75786f;
+  color: #64777a;
   text-align: center;
   margin-top: 0.25rem;
 }

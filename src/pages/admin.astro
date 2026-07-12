@@ -53,9 +53,11 @@
          só é aplicada quando os cartões são do modo blocos (GridCard) */
       ul[class*='CardsGrid']:has(> li[class*='GridCard']) {
         display: grid !important;
-        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 14px;
+        /* mesma largura do cartão de título da coleção, para alinhar com ele */
         width: 100% !important;
+        max-width: 682px;
         margin: 16px 0 !important;
         padding: 0 !important;
       }
@@ -178,24 +180,44 @@
           });
           CMS.registerPreviewTemplate('noticias', NoticiaPreview);
 
-          // ----- Configurações gerais: banner + contatos, como a home -----
+          // ----- Configurações gerais: banner (home) + cartões da página Contato -----
           var SettingsPreview = createClass({
             render: function () {
               var d = this.props.entry.get('data').toJS();
               var banner = d.banner || {};
+              var extras = d.contatos_extras || [];
               return h('div', { className: 'pv-pagina' },
+                h('p', { className: 'pv-onde' }, 'Página inicial (banner):'),
                 h('div', { className: 'pv-hero' },
                   h('p', { className: 'pv-slogan' }, d.slogan || ''),
                   h('h1', {}, banner.titulo || ''),
                   h('p', { className: 'pv-subtitulo' }, banner.subtitulo || ''),
                   h('span', { className: 'pv-botao' }, banner.botao_texto || '')
                 ),
-                h('div', { className: 'pv-cartao pv-contatos' },
-                  h('h3', {}, d.nome || ''),
-                  h('p', {}, d.endereco || ''),
-                  h('p', {}, [d.email, d.instagram].filter(Boolean).join(' · ')),
-                  h('p', { className: 'pv-detalhe' },
-                    'WhatsApp: ' + ((d.whatsapp && d.whatsapp.numero) || ''))
+                h('p', { className: 'pv-onde' }, 'Página Contato (cartões):'),
+                h('div', { className: 'pv-grade' },
+                  h('div', { className: 'pv-cartao pv-contato-cartao' },
+                    h('h3', {}, 'WhatsApp'),
+                    h('p', { className: 'pv-detalhe' }, (d.whatsapp && d.whatsapp.numero) || '')
+                  ),
+                  h('div', { className: 'pv-cartao pv-contato-cartao' },
+                    h('h3', {}, 'E-mail e Instagram'),
+                    h('p', { className: 'pv-detalhe' }, [d.email, d.instagram].filter(Boolean).join(' · '))
+                  ),
+                  h('div', { className: 'pv-cartao pv-contato-cartao' },
+                    h('h3', {}, 'Endereço'),
+                    h('p', { className: 'pv-detalhe' }, d.endereco || '')
+                  ),
+                  d.tecnofit ? h('div', { className: 'pv-cartao pv-contato-cartao' },
+                    h('h3', {}, 'Agendamento'),
+                    h('p', { className: 'pv-detalhe' }, d.tecnofit)
+                  ) : null,
+                  extras.map(function (c, i) {
+                    return h('div', { className: 'pv-cartao pv-contato-cartao', key: i },
+                      h('h3', {}, (c && c.rotulo) || ''),
+                      h('p', { className: 'pv-detalhe' }, (c && c.valor) || '')
+                    );
+                  })
                 )
               );
             },
